@@ -240,10 +240,10 @@ export default function Hero({ onOpenShowreel }) {
             {/* In-Frame Header Badge */}
             <div className="absolute top-3 inset-x-3 flex items-center justify-between font-mono text-[8px] text-zinc-300 tracking-widest uppercase pointer-events-none">
               <span className="flex items-center space-x-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-caribbean animate-pulse" />
-                <span className="text-caribbean font-semibold">REC ● LIVE</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#acee01] animate-pulse" />
+                <span className="text-[#acee01] font-semibold">RAYEES VISUALS</span>
               </span>
-              <span className="text-beige font-medium">RAEES · EYE</span>
+              <span className="text-beige font-medium">RAYEES · EYE</span>
             </div>
 
             {/* In-Frame Bottom Caption */}

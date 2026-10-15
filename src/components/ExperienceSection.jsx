@@ -1,640 +1,262 @@
 import React, { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import {
-  Film,
-  TrendingUp,
-  Palette,
-  ArrowUpRight,
-  MapPin
-} from 'lucide-react';
-import { EXPERIENCE } from '../data/portfolioData';
+import { ArrowUpRight } from 'lucide-react';
 import { playHoverSound, playShutterSound } from '../utils/audio';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Tab Configuration: Video Editing is the primary default, Digital Marketing is secondary, Graphic Design is supporting
-const TABS = [
-  {
-    id: 'video-editing',
-    label: 'VIDEO EDITING',
-    subtitle: 'Reels, Pacing & Commercial Cinema',
-    badge: 'PRIMARY FOCUS',
-    icon: Film
-  },
-  {
-    id: 'digital-marketing',
-    label: 'DIGITAL MARKETING',
-    subtitle: 'Content Planning, Growth & SEO',
-    badge: 'STRATEGY & REACH',
-    icon: TrendingUp
-  },
-  {
-    id: 'graphic-design',
-    label: 'GRAPHIC DESIGN',
-    subtitle: 'High-CTR Thumbnails & Social Assets',
-    badge: 'SUPPORTING ASSETS',
-    icon: Palette
-  }
+const FILTERS = [
+  { id: 'all', label: 'ALL WORKS' },
+  { id: 'video-editing', label: 'VIDEO EDITING' },
+  { id: 'videography', label: 'VIDEOGRAPHY' },
+  { id: 'graphic-design', label: 'GRAPHIC DESIGN' },
 ];
+
+const WORKS = [
+  {
+    id: 1, category: 'videography', index: '01',
+    title: 'CINEMATIC WEDDING FILMS',
+    subtitle: 'Nikkah · Engagement · Bride to Be',
+    company: 'Rayees Visual Productions', period: '2024 â€” PRESENT',
+    tags: ['4K DCI', 'CinemaScope 2.39:1', 'Sony FX6'],
+    description: 'Full ceremony coverage and emotional highlight films crafted with cinematic precision â€” capturing sacred moments across Nikkah, Engagement, and pre-wedding celebrations.',
+    deliverables: ['Master cinematic delivery across 4K DCI & 9:16 vertical reels', 'Full ceremony coverage with emotional narrative highlight films', 'Car-to-car rolling shots and precision automotive commercials'],
+  },
+  {
+    id: 2, category: 'video-editing', index: '02',
+    title: 'HIGH-RETENTION REELS',
+    subtitle: 'Short-Form · Beat-Matched · Hook Engineering',
+    company: 'Creative Visual Media', period: '2022 â€” 2024',
+    tags: ['CapCut', 'Adobe Premiere', '9:16 Vertical'],
+    description: 'Engineered short-form content optimised for algorithmic performance â€” kinetic cuts, subtitle architecture, and 3-second retention hooks that keep viewers locked in.',
+    deliverables: ['Produced destination travel films with 4K drone aerials', 'Shot macro culinary cinematography â€” steam, textures & plating', 'Captured 50+ milestone events with dynamic lighting & gimbal rigs'],
+  },
+  {
+    id: 3, category: 'video-editing', index: '03',
+    title: 'CORPORATE & KEYNOTE EDITS',
+    subtitle: 'Presentations · Teasers · Sound Design',
+    company: 'Digital Motion Studio', period: '2020 â€” 2022',
+    tags: ['Multi-Cam Sync', 'After Effects', 'Audio Stem Mix'],
+    description: 'Polished executive presentation videos, wedding teaser reels, and social campaigns delivered with rapid turnaround and broadcast-grade visual standards.',
+    deliverables: ['Edited high-impact executive presentation videos with kinetic graphics', 'Crafted romantic teaser reels with beat-matched editing', 'Handled multi-camera sync, dialogue cleanup & audio stem mixing'],
+  },
+  {
+    id: 4, category: 'graphic-design', index: '04',
+    title: 'THUMBNAILS & SOCIAL ASSETS',
+    subtitle: 'High-CTR · Brand Identity · Typography',
+    company: 'Rayees Visual Productions', period: '2022 â€” PRESENT',
+    tags: ['Canva', 'Adobe Photoshop', 'Swiss Typography'],
+    description: 'Engineered to maximise click-through rates â€” strong typography, facial expression isolation, and high-contrast colour palettes that command attention in crowded feeds.',
+    deliverables: ['YouTube & Reel thumbnails optimised for maximum CTR', 'Cohesive social media creatives, carousel templates & banners', 'Event posters, digital promotional material & minimalist brand marks'],
+  },
+  {
+    id: 5, category: 'videography', index: '05',
+    title: 'AUTOMOTIVE FILMS',
+    subtitle: 'High-Speed · Precision · Commercial',
+    company: 'Rayees Visual Productions', period: '2023 â€” PRESENT',
+    tags: ['Car-to-Car Rigs', 'Sony FX3', 'Exhaust Sync'],
+    description: 'Precision car-to-car rolling shots and exhaust-synced automotive commercials delivering visceral speed and cinematic drama for vehicle brands and private clients.',
+    deliverables: ['High-speed rolling shots with car-mounted suction rigs', 'Exhaust pop & burble synchronised with cut rhythm', 'Colour-graded in DaVinci Resolve with S-curve contrast'],
+  },
+  {
+    id: 6, category: 'video-editing', index: '06',
+    title: 'DIGITAL MARKETING CONTENT',
+    subtitle: 'Growth · SEO · Content Calendars',
+    company: 'Creative Visual Media', period: '2022 â€” 2024',
+    tags: ['Content Planning', 'Instagram Growth', 'Basic SEO'],
+    description: 'Aligning video cuts, hook design, and thumbnail strategy with marketing release schedules â€” creating a unified pipeline that drives organic reach and algorithmic momentum.',
+    deliverables: ['Structured content calendars with weekly thematic planning', 'Hashtag architecture & trend research for organic discovery', 'Audience engagement strategies and community management'],
+  },
+];
+
+
 
 export default function ExperienceSection() {
   const sectionRef = useRef(null);
-  const contentContainerRef = useRef(null);
-  const progressBarRef = useRef(null);
+  const [activeFilter, setActiveFilter] = useState('all');
+  const [hoveredWork, setHoveredWork] = useState(null);
 
-  // Default state: VIDEO EDITING must be selected automatically on load without requiring any click
-  const [activeTab, setActiveTab] = useState('video-editing');
-  const [timecode, setTimecode] = useState('02:14:28:19');
+  const filteredWorks = activeFilter === 'all' ? WORKS : WORKS.filter((w) => w.category === activeFilter);
 
-  // 24.00 FPS Cinematic Timecode Ticker
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date();
-      const h = String(now.getHours()).padStart(2, '0');
-      const m = String(now.getMinutes()).padStart(2, '0');
-      const s = String(now.getSeconds()).padStart(2, '0');
-      const f = String(Math.floor((now.getMilliseconds() / 1000) * 24)).padStart(2, '0');
-      setTimecode(`${h}:${m}:${s}:${f}`);
-    }, 1000 / 24);
-    return () => clearInterval(interval);
-  }, []);
-
-  // GSAP Initial ScrollTrigger Setup
+  // GSAP scroll reveals
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
-
     const ctx = gsap.context(() => {
-      // 1. Hero Reveal
-      gsap.fromTo(
-        '.exp-hero-anim',
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          stagger: 0.1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 85%',
-          }
-        }
-      );
-
-      // Scroll-linked progress line
-      if (progressBarRef.current) {
-        gsap.fromTo(
-          progressBarRef.current,
-          { scaleX: 0 },
-          {
-            scaleX: 1,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top 35%',
-              end: 'bottom 90%',
-              scrub: 0.2,
-            }
-          }
-        );
-      }
+      gsap.fromTo('.sw-label-anim', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' } });
+      gsap.fromTo('.sw-headline-anim', { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1, stagger: 0.08, ease: 'power4.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' } });
+      gsap.fromTo('.sw-filter-anim', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.08, ease: 'power2.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 65%' } });
     }, sectionRef);
-
     return () => ctx.revert();
   }, []);
 
-  // Smooth Tab Transition Handler
-  const handleTabChange = (tabId) => {
-    if (tabId === activeTab) return;
-    playShutterSound();
-
+  // Animate cards in when filter changes
+  useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion || !contentContainerRef.current) {
-      setActiveTab(tabId);
-      return;
-    }
+    if (prefersReducedMotion) return;
+    const cards = document.querySelectorAll('.sw-card');
+    if (!cards.length) return;
+    gsap.fromTo(cards, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.55, stagger: 0.1, ease: 'power3.out' });
+  }, [activeFilter]);
 
-    // Smooth exit & entrance crossfade
-    gsap.to(contentContainerRef.current, {
-      opacity: 0,
-      y: 12,
-      duration: 0.22,
-      ease: 'power2.in',
-      onComplete: () => {
-        setActiveTab(tabId);
-        gsap.fromTo(
-          contentContainerRef.current,
-          { opacity: 0, y: 22 },
-          { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' }
-        );
-      }
-    });
+  const handleFilterChange = (filterId) => {
+    if (filterId === activeFilter) return;
+    playShutterSound();
+    setActiveFilter(filterId);
   };
 
   return (
     <section
       id="experience"
       ref={sectionRef}
-      className="relative py-16 sm:py-24 md:py-36 px-4 sm:px-6 md:px-12 bg-black border-t border-white/[0.08] overflow-hidden select-none w-full"
+      className="relative py-20 sm:py-28 md:py-40 px-4 sm:px-6 md:px-12 bg-black border-t border-white/[0.07] overflow-hidden select-none w-full"
     >
-      {/* Cinematic Ambient Atmosphere */}
-      <div className="absolute top-1/4 right-0 w-64 sm:w-[500px] h-64 sm:h-[500px] bg-caribbean/[0.025] rounded-full blur-[100px] sm:blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-1/3 left-0 w-60 sm:w-[480px] h-60 sm:h-[480px] bg-caribbean/[0.02] rounded-full blur-[90px] sm:blur-[130px] pointer-events-none" />
+      {/* Subtle ambient glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#acee01]/[0.03] rounded-full blur-[120px] pointer-events-none" />
 
-      {/* Sticky Top Scroll Progress Line */}
-      <div className="fixed top-0 left-0 right-0 h-[2px] z-50 pointer-events-none bg-white/[0.04]">
-        <div
-          ref={progressBarRef}
-          className="h-full bg-caribbean shadow-[0_0_12px_#acee01] origin-left will-change-transform"
-        />
-      </div>
+      <div className="max-w-7xl mx-auto relative z-10">
 
-      <div className="max-w-7xl mx-auto relative z-10 w-full">
-
-        {/* ============================================================
-            01. CINEMATIC HERO COMPOSITION
-            ============================================================ */}
-        <div className="mb-10 sm:mb-14 md:mb-18">
-          {/* Technical Telemetry Bar */}
-          <div className="exp-hero-anim flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 sm:pb-6 border-b border-white/[0.08] font-mono text-[10px] sm:text-[11px] text-zinc-400">
-            <div className="flex items-center space-x-2.5 sm:space-x-3">
-              <span className="w-2 h-2 rounded-full bg-red-500 animate-ping flex-shrink-0" />
-              <span className="text-white font-bold tracking-widest uppercase">REC ● LIVE</span>
-              <span className="text-zinc-600">|</span>
-              <span className="text-caribbean font-semibold">{timecode}</span>
-              <span className="text-zinc-600 hidden sm:inline">|</span>
-              <span className="text-beige hidden sm:inline tracking-wider">FPS: 24.00 DCI</span>
+        {/* HEADER ROW */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-14 sm:mb-20">
+          <div>
+            <div className="sw-label-anim flex items-center gap-2 font-mono text-[11px] text-[#acee01] tracking-[0.25em] uppercase mb-4 sm:mb-5">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <rect x="1" y="1" width="12" height="12" rx="1" stroke="#acee01" strokeWidth="1.2" />
+                <path d="M4 4h6M4 7h6M4 10h3" stroke="#acee01" strokeWidth="1.2" strokeLinecap="round" />
+              </svg>
+              <span>CURATED SHOWCASE // 1 WORK IN EACH CATEGORY</span>
             </div>
-
-            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] tracking-widest uppercase">
-              <span className="px-2 py-0.5 rounded-xs bg-white/[0.03] border border-white/10 text-zinc-300">
-                PORTFOLIO ARCHIVE // 03 TRACKS
-              </span>
-              <span className="px-2 py-0.5 rounded-xs bg-caribbean/10 text-caribbean border border-caribbean/30">
-                INTERACTIVE EXPERIENCE MATRIX
-              </span>
-            </div>
-          </div>
-
-          {/* Typographic Composition */}
-          <div className="pt-4 sm:pt-6 md:pt-8 relative overflow-hidden">
-            {/* Background Ghost Wireframe Word */}
-            <div
-              className="absolute -top-1 sm:-top-3 left-0 right-0 font-display font-black text-4xl sm:text-7xl md:text-8xl text-stroke-cinema select-none pointer-events-none opacity-15 tracking-tighter leading-none overflow-hidden max-w-full truncate"
-              aria-hidden="true"
-            >
-              EXPERIENCE
-            </div>
-
-            <div className="relative z-10">
-              <div className="exp-hero-anim flex items-center space-x-2 font-mono text-[10px] sm:text-xs text-caribbean tracking-[0.25em] sm:tracking-[0.3em] uppercase mb-2 sm:mb-2.5 font-semibold">
-                <Film className="w-3.5 h-3.5 flex-shrink-0" />
-                <span>INTERACTIVE DISCIPLINE SELECTOR</span>
-              </div>
-
-              <h2 className="exp-hero-anim font-display font-black text-4xl sm:text-6xl md:text-7xl text-white tracking-tight uppercase">
+            <div className="overflow-hidden">
+              <h2 className="sw-headline-anim font-display font-black text-[clamp(2.2rem,6vw,5.5rem)] text-white tracking-tighter uppercase" style={{ lineHeight: 0.88 }}>
                 EXPERIENCE
               </h2>
-
-              <div className="exp-hero-anim mt-3 sm:mt-4 flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
-                <div>
-                  <p className="font-mono text-xs sm:text-sm md:text-base text-beige font-medium tracking-tight leading-snug">
-                    CRAFTING THE CUT. DRIVING THE REACH.
-                  </p>
-                  <p className="mt-1.5 text-zinc-400 font-light text-xs sm:text-sm max-w-2xl leading-relaxed">
-                    Interactive chronicle across video editing, high-retention Reels production, and digital marketing strategies. Select an option below to inspect each dedicated discipline.
-                  </p>
-                </div>
-
-                {/* Director Summary Card */}
-                <div className="w-full md:w-auto md:min-w-[280px] p-3.5 sm:p-4 bg-[#08080c] border border-white/[0.08] rounded-xs font-mono text-[10px] sm:text-[11px] space-y-1.5 self-start md:self-auto">
-                  <div className="flex justify-between text-zinc-400">
-                    <span className="text-zinc-600">DIRECTOR / EDITOR:</span>
-                    <span className="text-white font-semibold">MUHAMMED RAYEES V</span>
-                  </div>
-                  <div className="flex justify-between text-zinc-400">
-                    <span className="text-zinc-600">PRIMARY FOCUS:</span>
-                    <span className="text-caribbean">VIDEO EDITING & MARKETING</span>
-                  </div>
-                  <div className="flex justify-between text-zinc-400">
-                    <span className="text-zinc-600">STATUS:</span>
-                    <span className="text-beige">COMMISSIONS OPEN</span>
-                  </div>
-                </div>
-              </div>
             </div>
+            <div className="overflow-hidden">
+              <h2 className="sw-headline-anim font-display font-black text-[clamp(2.2rem,6vw,5.5rem)] text-white tracking-tighter uppercase flex items-center gap-4" style={{ lineHeight: 0.88 }}>
+                
+                <span className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-[#acee01] inline-block flex-shrink-0" style={{ marginBottom: '0.15em' }} />
+              </h2>
+            </div>
+          </div>
+
+          {/* Filter pills */}
+          <div className="flex flex-wrap gap-2 lg:flex-col lg:items-end lg:gap-2.5 lg:pb-2">
+            {FILTERS.map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                onClick={() => handleFilterChange(f.id)}
+                onMouseEnter={playHoverSound}
+                className={`sw-filter-anim font-mono font-bold text-[11px] sm:text-xs tracking-[0.18em] uppercase px-4 py-2 sm:px-5 sm:py-2.5 border transition-all duration-200 cursor-pointer ${
+                  activeFilter === f.id
+                    ? 'bg-[#acee01] text-black border-[#acee01]'
+                    : 'bg-transparent text-zinc-300 border-white/20 hover:border-white/50 hover:text-white'
+                }`}
+              >
+                {f.label}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* ============================================================
-            02. INTERACTIVE TABS / BUTTONS (MANDATORY REQUIREMENT)
-            3 Interactive options:
-            - VIDEO EDITING (Default on load)
-            - DIGITAL MARKETING
-            - GRAPHIC DESIGN (Kept secondary)
-            ============================================================ */}
-        <div className="mb-10 sm:mb-14">
-          <div className="p-2 sm:p-3 bg-[#08080c] border border-white/[0.08] rounded-sm">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
-              {TABS.map((tab) => {
-                const isActive = activeTab === tab.id;
-                const IconComp = tab.icon;
+        {/* DIVIDER */}
+        <div className="w-full h-px bg-white/[0.08] mb-10 sm:mb-12" />
 
-                return (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    onClick={() => handleTabChange(tab.id)}
-                    onMouseEnter={playHoverSound}
-                    className={`relative p-3.5 sm:p-4 rounded-xs border text-left transition-all duration-300 cursor-pointer min-h-[58px] sm:min-h-[72px] flex flex-col justify-between group ${
-                      isActive
-                        ? 'bg-[#12121c] border-caribbean text-white shadow-[0_0_20px_rgba(172,238,1,0.2)] ring-1 ring-caribbean/40'
-                        : 'bg-white/[0.02] border-white/5 text-zinc-400 hover:border-white/20 hover:text-white hover:bg-white/[0.04]'
-                    }`}
-                  >
-                    {/* Active Accent Bar Indicator */}
-                    {isActive && (
-                      <span className="absolute top-0 left-0 right-0 h-[2px] bg-caribbean shadow-[0_0_8px_#acee01]" />
-                    )}
-
-                    <div className="flex items-center justify-between mb-1.5 sm:mb-2">
-                      <div className="flex items-center space-x-2">
-                        <IconComp
-                          className={`w-4 h-4 transition-colors ${
-                            isActive ? 'text-caribbean' : 'text-zinc-500 group-hover:text-zinc-300'
-                          }`}
-                        />
-                        <span
-                          className={`font-display font-black text-sm sm:text-base tracking-tight uppercase ${
-                            isActive ? 'text-white' : 'text-zinc-300 group-hover:text-white'
-                          }`}
-                        >
-                          {tab.label}
-                        </span>
-                      </div>
-
-                      <span
-                        className={`font-mono text-[9px] px-1.5 py-0.5 rounded-xs uppercase tracking-wider font-semibold border ${
-                          isActive
-                            ? 'bg-caribbean text-black border-caribbean'
-                            : 'bg-black/60 text-zinc-500 border-white/10'
-                        }`}
-                      >
-                        {isActive ? '● ACTIVE' : tab.badge}
-                      </span>
-                    </div>
-
-                    <p className="font-mono text-[10px] sm:text-[11px] text-zinc-400 truncate">
-                      {tab.subtitle}
-                    </p>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* ============================================================
-            03. DYNAMIC CONTENT CONTAINER (ONLY ACTIVE TAB IS VISIBLE)
-            Smooth crossfade transitions between categories.
-            ============================================================ */}
-        <div ref={contentContainerRef} className="relative min-h-[400px]">
-
-          {/* ----------------------------------------------------------
-              TAB 01: VIDEO EDITING (PRIMARY FOCUS & DEFAULT ON LOAD)
-              Renders real commercial milestones from EXPERIENCE dataset
-              ---------------------------------------------------------- */}
-          {activeTab === 'video-editing' && (
-            <div className="space-y-12 sm:space-y-16 animate-fadeIn">
-              {/* Category Header Banner */}
-              <div className="p-4 sm:p-6 bg-[#08080c] border border-white/[0.08] rounded-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                  <span className="font-mono text-[10px] sm:text-[11px] text-caribbean tracking-widest uppercase block mb-1 font-semibold">
-                    PRIMARY DISCIPLINE // 01
-                  </span>
-                  <h3 className="font-display font-bold text-base sm:text-lg text-white uppercase tracking-tight">
-                    COMMERCIAL VIDEO EDITING & REELS
-                  </h3>
-                  <p className="font-mono text-xs sm:text-sm text-beige mt-1">
-                    Kinetic cuts, subtitle architecture, beat-matched sound design, and retention hooks.
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap gap-1.5 font-mono text-[10px] text-zinc-400">
-                  <span className="px-2.5 py-1 rounded-xs bg-white/[0.02] border border-white/[0.06] text-white">CapCut</span>
-                  <span className="px-2.5 py-1 rounded-xs bg-white/[0.02] border border-white/[0.06] text-white">Adobe Premiere Pro</span>
-                  <span className="px-2.5 py-1 rounded-xs bg-caribbean/15 text-caribbean border border-caribbean/30 font-semibold">9:16 Vertical Reels</span>
-                </div>
-              </div>
-
-              {/* Sequence of All 3 Real Milestones from EXPERIENCE */}
-              <div className="space-y-10 sm:space-y-14">
-                {EXPERIENCE.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="p-5 sm:p-7 md:p-8 bg-[#09090f] border border-white/[0.08] hover:border-caribbean/40 rounded-sm relative transition-all duration-300 group"
-                  >
-                    {/* Viewfinder Corners */}
-                    <div className="absolute top-3 left-3 w-3 h-3 border-t-2 border-l-2 border-caribbean/60 pointer-events-none" />
-                    <div className="absolute top-3 right-3 w-3 h-3 border-t-2 border-r-2 border-caribbean/60 pointer-events-none" />
-                    <div className="absolute bottom-3 left-3 w-3 h-3 border-b-2 border-l-2 border-caribbean/60 pointer-events-none" />
-                    <div className="absolute bottom-3 right-3 w-3 h-3 border-b-2 border-r-2 border-caribbean/60 pointer-events-none" />
-
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                      {/* Left Meta & Role */}
-                      <div className="lg:col-span-5 space-y-3">
-                        <div className="flex flex-wrap items-center gap-2 font-mono text-[10px] sm:text-[11px]">
-                          <span className={`px-2 py-0.5 rounded-xs border font-bold uppercase tracking-wider ${
-                            idx === 0
-                              ? 'bg-caribbean/15 text-caribbean border-caribbean/40'
-                              : 'bg-white/[0.04] text-beige border-white/10'
-                          }`}>
-                            {item.period}
-                          </span>
-                          <span className="text-zinc-600">·</span>
-                          <span className="text-zinc-400 font-semibold uppercase">LOG 0{idx + 1}</span>
-                          <span className="text-zinc-600 hidden xs:inline">·</span>
-                          <span className="text-zinc-500 hidden xs:inline flex items-center gap-1">
-                            <MapPin className="w-3 h-3 text-caribbean" />
-                            {item.location}
-                          </span>
-                        </div>
-
-                        <h4 className="font-display font-bold text-base sm:text-lg text-white uppercase tracking-tight group-hover:text-caribbean transition-colors">
-                          {item.role}
-                        </h4>
-
-                        <div className="font-mono text-xs sm:text-sm text-caribbean font-semibold uppercase tracking-wider">
-                          {item.company}
-                        </div>
-
-                        <p className="text-zinc-300 font-light text-xs sm:text-sm leading-relaxed pt-1">
-                          {item.description}
-                        </p>
-                      </div>
-
-                      {/* Right Deliverables Multi-Track Console */}
-                      <div className="lg:col-span-7 space-y-2.5">
-                        <span className="font-mono text-[10px] text-beige uppercase tracking-widest block font-medium">
-                          PRODUCTION DELIVERABLES & OUTPUT
-                        </span>
-
-                        <div className="space-y-2">
-                          {item.deliverables.map((deliv, dIdx) => (
-                            <div
-                              key={dIdx}
-                              onMouseEnter={playHoverSound}
-                              className="p-3 sm:p-3.5 bg-black/60 border border-white/[0.05] hover:border-caribbean/50 hover:bg-[#101018] rounded-xs flex items-start space-x-3 transition-colors"
-                            >
-                              <span className="w-1.5 h-1.5 rounded-full bg-caribbean mt-1.5 flex-shrink-0" />
-                              <div className="flex-1">
-                                <span className="font-mono text-xs sm:text-sm text-zinc-300 leading-relaxed block">
-                                  {deliv}
-                                </span>
-                              </div>
-                              <span className="font-mono text-[9px] text-zinc-600 flex-shrink-0 uppercase">
-                                TRACK 0{dIdx + 1}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-
-                        <div className="pt-2 flex flex-wrap gap-1.5 font-mono text-[10px] text-zinc-500">
-                          <span className="px-2 py-0.5 rounded-xs bg-white/[0.02] border border-white/[0.04] text-zinc-400">
-                            {idx === 0 ? '4K Wedding Cinema & Automotive' : idx === 1 ? 'Destination Travel & Food Reels' : 'Executive Keynotes & Teasers'}
-                          </span>
-                          <span className="px-2 py-0.5 rounded-xs bg-white/[0.02] border border-white/[0.04] text-caribbean">
-                            Fast-Cut Retention Hook
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* ----------------------------------------------------------
-              TAB 02: DIGITAL MARKETING (GROWTH, CONTENT PLANNING & SEO)
-              Focus on audience retention, scheduled publishing & SEO
-              ---------------------------------------------------------- */}
-          {activeTab === 'digital-marketing' && (
-            <div className="space-y-8 sm:space-y-12 animate-fadeIn">
-              {/* Category Header Banner */}
-              <div className="p-4 sm:p-6 bg-[#08080c] border border-white/[0.08] rounded-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                  <span className="font-mono text-[10px] sm:text-[11px] text-beige tracking-widest uppercase block mb-1 font-semibold">
-                    STRATEGIC DISCIPLINE // 02
-                  </span>
-                  <h3 className="font-display font-bold text-base sm:text-lg text-white uppercase tracking-tight">
-                    DIGITAL MARKETING & SEO STRATEGY
-                  </h3>
-                  <p className="font-mono text-xs sm:text-sm text-zinc-400 mt-1">
-                    Content planning, hashtag research, organic reach acceleration, and audience engagement.
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap gap-1.5 font-mono text-[10px] text-zinc-400">
-                  <span className="px-2.5 py-1 rounded-xs bg-white/[0.02] border border-white/[0.06] text-white">Content Calendars</span>
-                  <span className="px-2.5 py-1 rounded-xs bg-white/[0.02] border border-white/[0.06] text-white">Basic SEO</span>
-                  <span className="px-2.5 py-1 rounded-xs bg-caribbean/15 text-caribbean border border-caribbean/30 font-semibold">Instagram Growth</span>
-                </div>
-              </div>
-
-              {/* 5 Real Documented Responsibilities as a Structured Pipeline */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-                {[
-                  {
-                    step: 'NODE 01',
-                    title: 'CONTENT PLANNING & CALENDARIZATION',
-                    desc: 'Structured scheduling and weekly thematic asset planning to maintain audience retention without publishing friction.',
-                    highlight: 'REGULAR RELEASES'
-                  },
-                  {
-                    step: 'NODE 02',
-                    title: 'HASHTAG ARCHITECTURE & TREND RESEARCH',
-                    desc: 'Identifying high-intent, niche-specific hashtags for organic discovery across Instagram feeds and Explore tabs.',
-                    highlight: 'DISCOVERY INDEX'
-                  },
-                  {
-                    step: 'NODE 03',
-                    title: 'SEARCH ENGINE OPTIMIZATION (BASIC SEO)',
-                    desc: 'Targeted metadata setup, profile keywords, and caption formatting for search indexability and discoverability.',
-                    highlight: 'SEARCH RANKING'
-                  },
-                  {
-                    step: 'NODE 04',
-                    title: 'INSTAGRAM GROWTH STRATEGIES',
-                    desc: 'Optimizing hook pacing, cover imagery, and audio trends for algorithmic feed recommendations and watch time.',
-                    highlight: 'ORGANIC ACCELERATION'
-                  },
-                  {
-                    step: 'NODE 05',
-                    title: 'AUDIENCE ENGAGEMENT & COMMUNITY',
-                    desc: 'Translating passive views into active interactions through consistent responses and brand voice retention.',
-                    highlight: 'RETENTION CURVE'
-                  },
-                  {
-                    step: 'NODE 06',
-                    title: 'VIDEO EDITING & MARKETING SYNERGY',
-                    desc: 'Aligning video cuts, 3-sec retention hooks, and thumbnail design with marketing release schedules for maximum reach.',
-                    highlight: 'UNIFIED PIPELINE'
-                  }
-                ].map((node, nIdx) => (
-                  <div
-                    key={nIdx}
-                    className="p-5 sm:p-6 bg-[#08080c] border border-white/[0.08] hover:border-caribbean/40 rounded-sm flex flex-col justify-between transition-all duration-300 group"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between font-mono text-[10px] text-zinc-500 mb-3">
-                        <span className="text-caribbean font-bold">{node.step}</span>
-                        <span className="px-1.5 py-0.5 rounded-xs bg-white/[0.03] border border-white/10 text-beige">
-                          {node.highlight}
-                        </span>
-                      </div>
-
-                      <h4 className="font-display font-bold text-base sm:text-lg text-white uppercase tracking-tight mb-2 group-hover:text-caribbean transition-colors">
-                        {node.title}
-                      </h4>
-
-                      <p className="text-zinc-400 font-light text-xs sm:text-sm leading-relaxed">
-                        {node.desc}
-                      </p>
-                    </div>
-
-                    <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-between font-mono text-[9px] text-zinc-500">
-                      <span>CADENCE: REGULAR</span>
-                      <span className="text-caribbean font-semibold">ALGORITHMIC REACH</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* CV Quotation Note */}
-              <div className="p-4 bg-[#08080c] border-l-2 border-caribbean rounded-r-xs font-mono text-xs text-zinc-400 leading-relaxed italic">
-                "Managed social media pages by planning content, editing creative assets, and publishing on regular schedules while applying SEO and growth strategies."
-              </div>
-            </div>
-          )}
-
-          {/* ----------------------------------------------------------
-              TAB 03: GRAPHIC DESIGN (KEPT SECONDARY AS REQUESTED)
-              Thumbnails, social creatives, posters & brand assets
-              ---------------------------------------------------------- */}
-          {activeTab === 'graphic-design' && (
-            <div className="space-y-8 sm:space-y-12 animate-fadeIn">
-              {/* Category Header Banner */}
-              <div className="p-4 sm:p-6 bg-[#08080c] border border-white/[0.08] rounded-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                  <span className="font-mono text-[10px] sm:text-[11px] text-zinc-400 tracking-widest uppercase block mb-1 font-semibold">
-                    SUPPORTING DISCIPLINE // 03 (SECONDARY)
-                  </span>
-                  <h3 className="font-display font-bold text-base sm:text-lg text-white uppercase tracking-tight">
-                    SUPPORTING GRAPHIC ASSETS & THUMBNAILS
-                  </h3>
-                  <p className="font-mono text-xs sm:text-sm text-zinc-400 mt-1">
-                    Visual enhancement supporting video releases and social media brand identity.
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap gap-1.5 font-mono text-[10px] text-zinc-400">
-                  <span className="px-2.5 py-1 rounded-xs bg-white/[0.02] border border-white/[0.06] text-white">Canva</span>
-                  <span className="px-2.5 py-1 rounded-xs bg-white/[0.02] border border-white/[0.06] text-white">Adobe Photoshop</span>
-                  <span className="px-2.5 py-1 rounded-xs bg-white/[0.02] border border-white/[0.06] text-beige">Swiss Typography</span>
-                </div>
-              </div>
-
-              {/* 3 Secondary Design Asset Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                <div className="p-5 sm:p-6 bg-[#08080c] border border-white/[0.08] hover:border-caribbean/40 rounded-sm flex flex-col justify-between transition-all duration-300 group">
-                  <div>
-                    <span className="font-mono text-[10px] text-caribbean font-semibold tracking-wider uppercase block mb-2">
-                      01 / OPTICAL HOOK
-                    </span>
-                    <h4 className="font-display font-bold text-base sm:text-lg text-white uppercase tracking-tight mb-2 group-hover:text-caribbean transition-colors">
-                      YOUTUBE & REEL THUMBNAILS
-                    </h4>
-                    <p className="text-zinc-400 font-light text-xs sm:text-sm leading-relaxed">
-                      Engineered to maximize viewer click-through rates through strong typography, facial expression isolation, and high-contrast color palettes.
-                    </p>
-                  </div>
-                  <div className="mt-4 pt-3 border-t border-white/[0.06] font-mono text-[10px] text-zinc-500">
-                    CANVA & PHOTOSHOP · HIGH CTR
-                  </div>
-                </div>
-
-                <div className="p-5 sm:p-6 bg-[#08080c] border border-white/[0.08] hover:border-caribbean/40 rounded-sm flex flex-col justify-between transition-all duration-300 group">
-                  <div>
-                    <span className="font-mono text-[10px] text-beige font-semibold tracking-wider uppercase block mb-2">
-                      02 / SOCIAL ASSETS
-                    </span>
-                    <h4 className="font-display font-bold text-base sm:text-lg text-white uppercase tracking-tight mb-2 group-hover:text-caribbean transition-colors">
-                      SOCIAL MEDIA CREATIVES & BANNERS
-                    </h4>
-                    <p className="text-zinc-400 font-light text-xs sm:text-sm leading-relaxed">
-                      Cohesive post layouts, carousel templates, and digital advertising banners maintaining strict visual unity and brand consistency.
-                    </p>
-                  </div>
-                  <div className="mt-4 pt-3 border-t border-white/[0.06] font-mono text-[10px] text-zinc-500">
-                    LAYOUT SYSTEMS · FEED UNITY
-                  </div>
-                </div>
-
-                <div className="p-5 sm:p-6 bg-[#08080c] border border-white/[0.08] hover:border-caribbean/40 rounded-sm flex flex-col justify-between transition-all duration-300 group">
-                  <div>
-                    <span className="font-mono text-[10px] text-zinc-400 font-semibold tracking-wider uppercase block mb-2">
-                      03 / HIERARCHY
-                    </span>
-                    <h4 className="font-display font-bold text-base sm:text-lg text-white uppercase tracking-tight mb-2 group-hover:text-caribbean transition-colors">
-                      PROMOTIONAL POSTERS & LOGOS
-                    </h4>
-                    <p className="text-zinc-400 font-light text-xs sm:text-sm leading-relaxed">
-                      Clean event posters, digital promotional material, and minimalist brand marks rooted in color science and clear hierarchical composition.
-                    </p>
-                  </div>
-                  <div className="mt-4 pt-3 border-t border-white/[0.06] font-mono text-[10px] text-zinc-500">
-                    COLOR THEORY · VECTOR MARKS
-                  </div>
-                </div>
-              </div>
-
-              {/* CV Quotation Note */}
-              <div className="p-4 bg-[#08080c] border-l-2 border-white/20 rounded-r-xs font-mono text-xs text-zinc-400 leading-relaxed italic">
-                "Designed posters, thumbnails, banners, and social creatives using Canva and Adobe Photoshop while maintaining strict brand consistency and visual appeal."
-              </div>
-            </div>
-          )}
-
-        </div>
-
-        {/* ============================================================
-            04. FINAL CINEMATIC SECTION EXIT
-            Thumb-friendly call-to-action leading into #contact
-            ============================================================ */}
-        <div className="mt-16 sm:mt-24 md:mt-32 pt-6 sm:pt-8 border-t border-white/[0.08] flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6 font-mono text-xs text-zinc-500">
-          <div className="flex items-center space-x-2.5 sm:space-x-3">
-            <span className="w-1.5 h-1.5 rounded-full bg-caribbean animate-ping flex-shrink-0" />
-            <span className="text-zinc-300 text-[11px] sm:text-xs">
-              ACTIVE SELECTION: {activeTab.toUpperCase().replace('-', ' ')}
-            </span>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:space-x-4 w-full md:w-auto">
-            <span className="text-zinc-600 hidden lg:inline">OPEN FOR VIDEO EDITING & MARKETING COMMISSIONS</span>
-            <a
-              href="#contact"
-              onClick={playShutterSound}
-              onMouseEnter={playHoverSound}
-              className="inline-flex items-center justify-center space-x-2 px-5 py-3 sm:py-2.5 rounded-xs bg-white/[0.03] hover:bg-caribbean hover:text-black border border-white/10 text-white font-bold transition-all duration-300 w-full sm:w-auto text-center min-h-[44px]"
-              data-cursor="CONNECT"
+        {/* WORKS LIST */}
+        <div className="space-y-0">
+          {filteredWorks.map((work) => (
+            <div
+              key={work.id}
+              className={`sw-card group relative border-b border-white/[0.08] transition-all duration-500 cursor-default ${
+                hoveredWork === work.id ? 'bg-white/[0.025]' : ''
+              }`}
+              onMouseEnter={() => { setHoveredWork(work.id); playHoverSound(); }}
+              onMouseLeave={() => setHoveredWork(null)}
             >
-              <span>INITIATE COLLABORATION</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </a>
+              {/* Lime left bar on hover */}
+              <div className={`absolute left-0 top-0 bottom-0 w-[3px] bg-[#acee01] transition-all duration-300 ${hoveredWork === work.id ? 'opacity-100' : 'opacity-0'}`} />
+
+              <div className="py-8 sm:py-10 pl-6 sm:pl-8 pr-4 grid grid-cols-12 gap-4 sm:gap-6 items-start">
+                {/* Index */}
+                <div className="col-span-2 sm:col-span-1">
+                  <span className="font-mono text-xs sm:text-sm text-zinc-600 font-semibold">{work.index}</span>
+                </div>
+
+                {/* Title + meta */}
+                <div className="col-span-10 sm:col-span-5 lg:col-span-4">
+                  <span className="font-mono text-[10px] text-[#acee01] tracking-widest uppercase font-semibold block mb-1.5">
+                    {FILTERS.find(f => f.id === work.category)?.label || work.category.toUpperCase()}
+                  </span>
+                  <h3 className="font-display font-black text-lg sm:text-xl md:text-2xl text-white uppercase tracking-tight leading-tight group-hover:text-[#acee01] transition-colors duration-300">
+                    {work.title}
+                  </h3>
+                  <p className="mt-1 font-mono text-xs text-zinc-500">{work.subtitle}</p>
+                </div>
+
+                {/* Description + tags */}
+                <div className="col-span-12 sm:col-span-5 lg:col-span-5">
+                  <p className="text-zinc-400 font-light text-sm leading-relaxed">{work.description}</p>
+                  <div className="mt-4 flex flex-wrap gap-1.5">
+                    {work.tags.map((tag) => (
+                      <span key={tag} className="font-mono text-[10px] px-2 py-0.5 border border-white/10 text-zinc-500 uppercase tracking-wide">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Period + Arrow */}
+                <div className="col-span-12 lg:col-span-2 flex flex-row lg:flex-col items-center lg:items-end justify-between lg:justify-start gap-4 lg:gap-3 pt-1">
+                  <div className="hidden lg:block text-right">
+                    <span className="font-mono text-[10px] text-zinc-600 block uppercase tracking-widest">{work.period}</span>
+                    <span className="font-mono text-[10px] text-zinc-500 block mt-0.5 uppercase tracking-wide">{work.company}</span>
+                  </div>
+                  <div className="lg:hidden font-mono text-[10px] text-zinc-600 uppercase tracking-widest">
+                    {work.period} · {work.company}
+                  </div>
+                  <div className={`w-8 h-8 border flex items-center justify-center transition-all duration-300 flex-shrink-0 ${
+                    hoveredWork === work.id ? 'bg-[#acee01] border-[#acee01]' : 'border-white/10'
+                  }`}>
+                    <ArrowUpRight className={`w-4 h-4 transition-colors duration-300 ${
+                      hoveredWork === work.id ? 'text-black' : 'text-zinc-500'
+                    }`} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Deliverables â€” slide-reveal on hover */}
+              <div className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                hoveredWork === work.id ? 'max-h-48 opacity-100 pb-6 sm:pb-8' : 'max-h-0 opacity-0'
+              }`}>
+                <div className="pl-6 sm:pl-8 pr-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {work.deliverables.map((d, dIdx) => (
+                    <div key={dIdx} className="flex items-start gap-2.5 font-mono text-xs text-zinc-500 leading-relaxed">
+                      <span className="w-1 h-1 rounded-full bg-[#acee01] mt-1.5 flex-shrink-0" />
+                      <span>{d}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* FOOTER CTA */}
+        <div className="mt-16 sm:mt-20 pt-8 border-t border-white/[0.08] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+          <div className="font-mono text-xs text-zinc-600 uppercase tracking-widest">
+            {filteredWorks.length} WORK{filteredWorks.length !== 1 ? 'S' : ''} SHOWN
+            {activeFilter !== 'all' && ` // ${FILTERS.find(f => f.id === activeFilter)?.label}`}
           </div>
+          <a
+            href="#contact"
+            onClick={playShutterSound}
+            onMouseEnter={playHoverSound}
+            className="inline-flex items-center gap-2.5 px-6 py-3 bg-[#acee01] text-black font-display font-black text-sm uppercase tracking-tight hover:bg-white transition-colors duration-200"
+          >
+            <span>INITIATE COLLABORATION</span>
+            <ArrowUpRight className="w-4 h-4" />
+          </a>
         </div>
 
       </div>

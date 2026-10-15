@@ -1,5 +1,5 @@
 export const PERSONAL_INFO = {
-  name: "RAEES",
+  name: "RAYEES",
   role: "Videographer · Video Editor · Visual Storyteller",
   tagline: "BRINGING LIFE & STORIES INTO THE LIGHT.",
   bio: "Creative videographer and editor specializing in wedding ceremonies (Bride to Be, Groom to Be, Nikkah, Engagement), milestone birthday celebrations, high-cadence automotive cinema, destination travel stories, culinary food reels, and executive presentations.",
@@ -335,7 +335,7 @@ export const WORK_PROJECTS = [
 ];
 
 export const SHOWREEL_METRICS = {
-  title: "RAEES SHOWREEL 2026",
+  title: "RAYEES SHOWREEL 2026",
   aspect: "2.39:1 DCI SCOPE",
   fps: "24.00 FPS",
   resolution: "4K DCI MASTER",
@@ -445,7 +445,7 @@ export const EXPERIENCE = [
   {
     period: "2024 — PRESENT",
     role: "Lead Videographer & Commercial Video Editor",
-    company: "Raees Visual Productions",
+    company: "Rayees Visual Productions",
     location: "On-Location / Studio",
     description: "Directing, shooting, and editing wedding ceremonies (Nikkah, Engagement, Bride to Be, Groom to Be), high-speed automotive films, travel documentaries, and culinary promos with high cinematic standards.",
     deliverables: [

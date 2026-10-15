@@ -66,7 +66,7 @@ export default function Navbar({ onSelectWork }) {
             </div>
             <div className="flex flex-col">
               <span className="font-display font-bold text-sm tracking-widest uppercase text-white group-hover:text-caribbean transition-colors">
-                RAEES
+                RAYEES
               </span>
               <span className="font-mono text-[9px] text-beige tracking-wider uppercase">
                 CINEMA · EDITS & VISUALS
@@ -143,7 +143,7 @@ export default function Navbar({ onSelectWork }) {
         <div className="fixed inset-0 z-40 bg-black/98 backdrop-blur-2xl flex flex-col justify-center px-8 lg:hidden animate-fadeIn">
           <div className="flex flex-col space-y-6">
             <div className="font-mono text-xs text-caribbean tracking-widest uppercase mb-4">
-              [ DIRECTORY // RAEES VISUALS ]
+              [ DIRECTORY // RAYEES VISUALS ]
             </div>
             {navLinks.map((link, idx) => (
               <a

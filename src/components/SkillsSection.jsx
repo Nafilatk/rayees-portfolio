@@ -406,16 +406,11 @@ export default function SkillsSection() {
 
             {/* Right Telemetry Bar */}
             <div className="flex flex-col md:items-end font-mono text-xs text-zinc-400 space-y-1">
-              <div className="flex items-center space-x-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
-                <span className="text-white font-medium">REC ● LIVE</span>
-                <span className="text-zinc-600">|</span>
-                <span className="text-caribbean">{formatTimecode(timecodeSeconds)}</span>
-              </div>
               <div className="text-[11px] text-zinc-500 tracking-wider uppercase">
                 ACEScc · PRORES 422 · 24.00 FPS
               </div>
             </div>
+
           </div>
         </div>
 
