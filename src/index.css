@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg: #000000;
+    --color-surface: #050505;
+    --color-border: rgba(255, 255, 255, 0.08);
+    --color-accent: #acee01;
+    --color-accent-dark: #62a30d;
+    --color-beige: #e8dcc4;
+    --color-neutral: #b4bbab;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: #000000;
+    color: #ffffff;
+  }
+
+  body {
+    background-color: #000000;
+    color: #ffffff;
+    selection-background-color: #acee01;
+    selection-color: #000000;
+  }
+
+  /* Custom minimal pure black scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #000000;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #181818;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #acee01;
+  }
+}
+
+/* Subtle Film Grain Effect */
+.film-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* Cinematic text reveal clip */
+.clip-reveal {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.text-stroke-cinema {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.25);
+  color: transparent;
+  transition: all 0.4s ease;
+}
+
+.text-stroke-cinema:hover {
+  -webkit-text-stroke: 1px #acee01;
+  color: rgba(172, 238, 1, 0.12);
+}
+
+/* Letterbox Aspect Ratio Box */
+.aspect-cinemascope {
+  aspect-ratio: 2.39 / 1;
+}
+
+/* Glassmorphism for minimal pure black cinematic UI */
+.glass-panel {
+  background: rgba(5, 5, 5, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Vignette effect */
+.vignette-overlay {
+  background: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.95) 100%);
+  pointer-events: none;
+}
+
+/* Smooth marquee or filmstrip strip */
+@keyframes scrollLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-filmstrip {
+  display: flex;
+  width: max-content;
+  animation: scrollLeft 35s linear infinite;
+}
+
+.animate-filmstrip:hover {
+  animation-play-state: paused;
+}
+
+/* Hide scrollbars for horizontal gallery */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
