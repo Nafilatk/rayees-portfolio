@@ -4,10 +4,10 @@ export const PERSONAL_INFO = {
   tagline: "BRINGING LIFE & STORIES INTO THE LIGHT.",
   bio: "Creative videographer and editor specializing in wedding ceremonies (Bride to Be, Groom to Be, Nikkah, Engagement), milestone birthday celebrations, high-cadence automotive cinema, destination travel stories, culinary food reels, and executive presentations.",
   location: "Available for Commissions & On-Location Shoots",
-  email: "raees.visuals@domain.com",
-  phone: "+1 (555) 019-2834",
-  whatsapp: "+15550192834",
-  instagram: "https://instagram.com",
+  email: "muhammedrayees759@gmail.com",
+  phone: "+91 94463 88427",
+  whatsapp: "+919446388427",
+  instagram: "https://instagram.com/shotsbyrys",
   behance: "https://behance.net",
   linkedin: "https://linkedin.com",
   vimeo: "https://vimeo.com",
@@ -15,7 +15,7 @@ export const PERSONAL_INFO = {
   status: "AVAILABLE FOR COMMISSIONS",
   reelDuration: "02:18",
   aspectRatio: "2.39:1 CINEMASCOPE",
-  heroImage: "/images/hero_portrait.jpg"
+  heroImage: "/images/hero_cutout.png"
 };
 
 // Original Categories for SelectedWorks (Untouched as requested)
@@ -26,139 +26,69 @@ export const CATEGORIES = [
   { id: "GRAPHIC DESIGN", label: "GRAPHIC DESIGN" }
 ];
 
-// Original Projects for SelectedWorks (Preserved as requested)
+// Projects for SelectedWorks — 3 real disciplines
 export const PROJECTS = [
   {
-    id: "echoes-of-valkyrie",
-    title: "ECHOES OF VALKYRIE",
+    id: "frames-in-motion",
+    title: "FRAMES IN MOTION",
     category: "VIDEO EDITING",
-    subCategory: "Commercial Fashion Film",
+    subCategory: "SHORT-FORM VIDEO · REELS",
     year: "2026",
-    role: "Lead Editor & Sound Designer",
-    duration: "02:45",
-    tools: ["DaVinci Resolve", "Premiere Pro", "After Effects"],
-    aspectRatio: "2.39:1 Anamorphic",
+    role: "Video Editor",
+    duration: null,
+    tools: ["CapCut", "Video Editing"],
+    aspectRatio: "9:16 VERTICAL REEL",
     thumbnail: "public/images/showreel_thumbnail.png",
     videoUrl: "/videos/reel.mp4",
-    shortDesc: "High-octane narrative commercial combining kinetic montage pacing, deep atmospheric sound design, and an electric lime cinema grade.",
-    fullDesc: "Commissioned for an avant-garde fashion capsule, this piece blends rapid rhythmic cross-cutting with sub-bass audio swells and textural sound design.",
-    client: "Studio Valkyrie",
+    shortDesc: "Cinematic edits combining dynamic transitions, text animation, synchronized audio, subtitles, and visual effects.",
+    fullDesc: "Cinematic edits combining dynamic transitions, text animation, synchronized audio, subtitles, and visual effects crafted to maximize retention and engagement on short-form platforms.",
+    client: null,
     colorPalette: ["#000000", "#1b1b22", "#acee01", "#b4bbab"],
     aspect: "large",
     stills: [
-      "/images/hero_cinematic.jpg",
-      "/images/editing_suite.jpg",
-      "https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=1200&auto=format&fit=crop"
+      "public/images/showreel_thumbnail.png"
     ]
   },
   {
-    id: "midnight-cinematography",
-    title: "MIDNIGHT HORIZON",
+    id: "moments-in-focus",
+    title: "MOMENTS IN FOCUS",
     category: "VIDEOGRAPHY",
-    subCategory: "Cinematography & Lighting",
-    year: "2025",
-    role: "Director of Photography",
-    duration: "03:12",
-    tools: ["ARRI Alexa Mini", "Cooke Anamorphic 40mm", "DaVinci Resolve Studio"],
-    aspectRatio: "2.39:1 CinemaScope",
+    subCategory: "VISUAL STORYTELLING · CONTENT",
+    year: "2026",
+    role: "Videographer",
+    duration: null,
+    tools: ["Visual Composition", "Audio Sync"],
+    aspectRatio: "2.39:1 CINEMASCOPE",
     thumbnail: "public/images/skill2 videography.png",
     videoUrl: "public/videos/skill2.mp4",
-    shortDesc: "Moody low-light cinematography capturing urban nightscapes through anamorphic glass with organic optical flares.",
-    fullDesc: "Shot entirely between 1:00 AM and 5:00 AM across transit corridors. Utilized minimal LED tube accent lighting to sculpt silhouettes while preserving rich pure black shadow detail.",
-    client: "Independent Production",
+    shortDesc: "Capturing authentic moments and transforming footage into engaging visual stories for digital platforms.",
+    fullDesc: "Capturing authentic moments and transforming raw footage into compelling visual stories for digital platforms — with a focus on visual composition and audio synchronization.",
+    client: null,
     colorPalette: ["#000000", "#0f172a", "#acee01", "#b4bbab"],
     aspect: "regular",
     stills: [
-      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=1200&auto=format&fit=crop"
+      "public/images/skill2 videography.png"
     ]
   },
   {
-    id: "chronicles-of-echo",
-    title: "CHRONICLES OF ECHO",
+    id: "visual-impact",
+    title: "VISUAL IMPACT",
     category: "GRAPHIC DESIGN",
-    subCategory: "Key Art &  Poster",
-    year: "2025",
-    role: "Creative Director & Poster Designer",
-    duration: "Print & Digital Campaign",
-    tools: ["Photoshop", "Illustrator", "InDesign"],
-    aspectRatio: "2:3 Poster",
+    subCategory: "POSTERS · SOCIAL MEDIA CREATIVES",
+    year: "2026",
+    role: "Graphic Designer",
+    duration: null,
+    tools: ["Canva", "Adobe Photoshop"],
+    aspectRatio: "PRINT & DIGITAL",
     thumbnail: "public/images/grafic.png",
-    videoUrl: "public/images/grafic.png",
-    shortDesc: "Award-winning editorial poster design utilizing Swiss typography, raw texture scanning, and brutalist geometric framing.",
-    fullDesc: "Official key art campaign designed for an indie psychological thriller. Incorporates distressed typography, bespoke film strip glyphs, and custom hand-screened texture treatments.",
-    client: "Aperture Films",
+    videoUrl: null,
+    shortDesc: "Eye-catching designs combining bold typography, thoughtful layouts, color theory, and consistent brand visuals.",
+    fullDesc: "Eye-catching designs combining bold typography, thoughtful layouts, color theory, and consistent brand visuals — crafted for posters, social media creatives, and promotional content.",
+    client: null,
     colorPalette: ["#000000", "#e4e4e7", "#acee01", "#71717a"],
     aspect: "regular",
     stills: [
-      "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop"
-    ]
-  },
-  {
-    id: "architects-monologue",
-    title: "THE ARCHITECT'S MONOLOGUE",
-    category: "VIDEO EDITING",
-    subCategory: "Documentary Short",
-    year: "2025",
-    role: "Editor & Colorist",
-    duration: "06:14",
-    tools: ["Premiere Pro", "DaVinci Resolve", "Izotope RX"],
-    aspectRatio: "4:3 Academy Ratio",
-    thumbnail: "/images/editing_suite.jpg",
-    videoUrl: "/videos/reel.mp4",
-    shortDesc: "Deliberate, contemplative documentary editing exploring brutalist concrete structures and human scale in 4:3 Academy ratio.",
-    fullDesc: "Emphasized spatial continuity and silence as narrative devices. The sound architecture was constructed using room-tone reverberations recorded inside cavernous spaces.",
-    client: "Design Guild",
-    colorPalette: ["#000000", "#2a2b34", "#d4d4d8", "#acee01"],
-    aspect: "large",
-    stills: [
-      "/images/editing_suite.jpg",
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop"
-    ]
-  },
-  {
-    id: "iceland-solitude",
-    title: "SOLITUDE IN ICELAND",
-    category: "VIDEOGRAPHY",
-    subCategory: "Aerial & Landscape Cinema",
-    year: "2024",
-    role: "Cinematographer & Drone Pilot",
-    duration: "04:02",
-    tools: ["RED V-Raptor 8K", "DJI Inspire 3", "Zeiss Supreme Prime"],
-    aspectRatio: "2.39:1 CinemaScope",
-    thumbnail: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
-    videoUrl: "/videos/reel.mp4",
-    shortDesc: "Expansive aerial cinematography over black volcanic sands, sub-zero glacial waterfalls, and low Arctic sunlight.",
-    fullDesc: "Shot across 8 days in sub-zero conditions. Captured high dynamic range textures from basalt columns to turbulent glacial runoffs.",
-    client: "Wilderness Expeditions",
-    colorPalette: ["#000000", "#1e293b", "#94a3b8", "#acee01"],
-    aspect: "regular",
-    stills: [
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop"
-    ]
-  },
-  {
-    id: "soundwave-identity",
-    title: "SOUNDWAVE RECORDS",
-    category: "GRAPHIC DESIGN",
-    subCategory: "Brand Identity & Vinyl System",
-    year: "2024",
-    role: "Brand Identity Designer",
-    duration: "Full Brand System",
-    tools: ["Illustrator", "Photoshop", "Glyphs"],
-    aspectRatio: "1:1 Square & Print",
-    thumbnail: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop",
-    videoUrl: null,
-    shortDesc: "Monochrome visual identity, bespoke typographic logotype, and gatefold vinyl packaging for an electronic record label.",
-    fullDesc: "Designed an entire visual architecture centered around analogue audio frequencies and waveform harmonics.",
-    client: "Soundwave Media",
-    colorPalette: ["#000000", "#18181b", "#ffffff", "#acee01"],
-    aspect: "regular",
-    stills: [
-      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1200&auto=format&fit=crop"
+      "public/images/grafic.png"
     ]
   }
 ];

@@ -16,10 +16,10 @@ export default function Hero({ onOpenShowreel }) {
   const introRef = useRef(null);
   const ctaGroupRef = useRef(null);
 
-  const heroImageSrc = PERSONAL_INFO.heroImage || '/images/hero_portrait.jpg';
-  const marqueePhrase = "NIKKAH · BRIDE TO BE · GROOM TO BE · AUTOMOTIVE · TRAVELING · FOOD · PRESENTATION · ENGAGEMENT · BIRTHDAY · ";
-  // 3 repetitions gives abundant width across all screens
-  const marqueeTextHalf = marqueePhrase.repeat(3);
+  const heroImageSrc = PERSONAL_INFO.heroImage || '/images/hero_cutout.png';
+  const marqueePhrase = "MUHAMMED RAYEES · VIDEO EDITOR & PHOTOGRAPHER · ";
+  // 4 repetitions gives abundant seamless width across all screen sizes
+  const marqueeTextHalf = marqueePhrase.repeat(4);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -34,39 +34,47 @@ export default function Hero({ onOpenShowreel }) {
         0
       );
 
-      // 2. Camera metadata viewfinder HUD reveal
-      tl.fromTo(
-        metaOverlayRef.current,
-        { opacity: 0, y: -15 },
-        { opacity: 1, y: 0, duration: 1.2 },
-        0.2
-      );
+      // 2. Camera metadata viewfinder HUD reveal (if present)
+      if (metaOverlayRef.current) {
+        tl.fromTo(
+          metaOverlayRef.current,
+          { opacity: 0, y: -15 },
+          { opacity: 1, y: 0, duration: 1.2 },
+          0.2
+        );
+      }
 
       // 3. Marquee enters subtly behind portrait
-      tl.fromTo(
-        marqueeContainerRef.current,
-        { opacity: 0, scale: 0.98 },
-        { opacity: 1, scale: 1, duration: 1.5, ease: 'power2.out' },
-        0.4
-      );
+      if (marqueeContainerRef.current) {
+        tl.fromTo(
+          marqueeContainerRef.current,
+          { opacity: 0, scale: 0.98 },
+          { opacity: 1, scale: 1, duration: 1.5, ease: 'power2.out' },
+          0.4
+        );
+      }
 
       // 4. Portrait fades/slides into position
-      tl.fromTo(
-        portraitRef.current,
-        { opacity: 0, y: 40, scale: 0.95 },
-        { opacity: 1, y: 0, scale: 1, duration: 1.3, ease: 'power3.out' },
-        0.6
-      );
+      if (portraitRef.current) {
+        tl.fromTo(
+          portraitRef.current,
+          { opacity: 0, y: 40, scale: 0.95 },
+          { opacity: 1, y: 0, scale: 1, duration: 1.3, ease: 'power3.out' },
+          0.6
+        );
+      }
 
-      // 5. Role text appears
-      tl.fromTo(
-        subtitleRef.current,
-        { opacity: 0, letterSpacing: '0.35em', y: 15 },
-        { opacity: 1, letterSpacing: '0.22em', y: 0, duration: 1.1 },
-        0.8
-      );
+      // 5. Role text appears (if present)
+      if (subtitleRef.current) {
+        tl.fromTo(
+          subtitleRef.current,
+          { opacity: 0, letterSpacing: '0.35em', y: 15 },
+          { opacity: 1, letterSpacing: '0.22em', y: 0, duration: 1.1 },
+          0.8
+        );
+      }
 
-      // 6. Supporting intro line appears
+      // 6. Supporting intro line appears (if present)
       if (introRef.current) {
         tl.fromTo(
           introRef.current,
@@ -76,13 +84,15 @@ export default function Hero({ onOpenShowreel }) {
         );
       }
 
-      // 7. CTA appears
-      tl.fromTo(
-        ctaGroupRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 1 },
-        1.0
-      );
+      // 7. CTA appears (if present)
+      if (ctaGroupRef.current) {
+        tl.fromTo(
+          ctaGroupRef.current,
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 1 },
+          1.0
+        );
+      }
 
       // 8. Continuous Infinite Marquee Animations (via GSAP)
       if (!prefersReducedMotion) {
@@ -176,163 +186,60 @@ export default function Hero({ onOpenShowreel }) {
           ============================================================ */}
       <div
         ref={marqueeContainerRef}
-        className="absolute inset-x-0 top-1/2 -translate-y-1/2 pointer-events-none z-10 overflow-hidden flex flex-col justify-center space-y-4 md:space-y-10 opacity-0"
+        className="absolute inset-x-0 top-1/2 -translate-y-1/2 pointer-events-none z-10 overflow-hidden flex flex-col justify-center space-y-4 md:space-y-8 lg:space-y-10 opacity-0"
       >
+        {/* Soft Cinema Vignette Fades on left and right for seamless edge feathering */}
+        <div className="absolute inset-y-0 left-0 w-24 sm:w-36 md:w-48 bg-gradient-to-r from-black via-black/80 to-transparent z-20 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-24 sm:w-36 md:w-48 bg-gradient-to-l from-black via-black/80 to-transparent z-20 pointer-events-none" />
         {/* Track 1: Solid Upper Stream (Scrolls Left) */}
         <div className="w-full overflow-hidden flex">
           <div
             ref={marqueeTrack1Ref}
-            className="flex whitespace-nowrap will-change-transform font-display font-black text-5xl sm:text-7xl md:text-8xl lg:text-[7.5rem] tracking-tight uppercase leading-none text-white/[0.14]"
+            className="flex flex-shrink-0 w-max whitespace-nowrap will-change-transform font-display font-black text-5xl sm:text-7xl md:text-8xl lg:text-[7.5rem] tracking-tight uppercase leading-none text-white/[0.14]"
           >
-            <span className="inline-block px-2">{marqueeTextHalf}</span>
-            <span className="inline-block px-2">{marqueeTextHalf}</span>
+            <span className="inline-block flex-shrink-0">{marqueeTextHalf}</span>
+            <span className="inline-block flex-shrink-0">{marqueeTextHalf}</span>
           </div>
         </div>
 
-        {/* Track 2: Stylized Lower Stream (Scrolls Right with Caribbean green outline) */}
+        {/* Track 2: Stylized Lower Stream (Scrolls Right in Opposite Direction - No Refresh Hitch) */}
         <div className="w-full overflow-hidden flex">
           <div
             ref={marqueeTrack2Ref}
-            className="flex whitespace-nowrap will-change-transform font-display font-black text-5xl sm:text-7xl md:text-8xl lg:text-[7.5rem] tracking-tight uppercase leading-none text-stroke-cinema opacity-25"
+            style={{ transform: 'translateX(-50%)' }}
+            className="flex flex-shrink-0 w-max whitespace-nowrap will-change-transform font-display font-black text-5xl sm:text-7xl md:text-8xl lg:text-[7.5rem] tracking-tight uppercase leading-none text-stroke-cinema opacity-25"
           >
-            <span className="inline-block px-2">{marqueeTextHalf}</span>
-            <span className="inline-block px-2">{marqueeTextHalf}</span>
+            <span className="inline-block flex-shrink-0">{marqueeTextHalf}</span>
+            <span className="inline-block flex-shrink-0">{marqueeTextHalf}</span>
           </div>
         </div>
       </div>
 
       {/* ============================================================
-          LAYER 3 & 4: CENTER FOREGROUND PORTRAIT + ROLE + CTA (z-20 / z-30)
+          LAYER 3: CENTER FOREGROUND HERO PORTRAIT (WITHOUT BG) (z-20)
           ============================================================ */}
-      <div className="relative z-20 max-w-4xl mx-auto w-full flex flex-col items-center justify-center text-center my-auto">
-        
-        {/* Center Foreground Portrait with Cinematic Framing */}
+      <div className="relative z-20 max-w-5xl mx-auto w-full flex flex-col items-center justify-center text-center my-auto pointer-events-none">
+        {/* Center Foreground Portrait with Dynamic Depth */}
         <div
           ref={portraitRef}
-          className="relative group perspective-1000 mb-6 md:mb-8"
+          className="relative group perspective-1000 flex items-center justify-center pointer-events-auto select-none"
         >
-          {/* Ambient Caribbean Green Glow Rim behind portrait */}
-          <div className="absolute -inset-2 bg-gradient-to-tr from-caribbean/25 via-transparent to-beige/20 rounded-sm blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+          {/* Ambient Caribbean Green + Soft Warm Radial Backlight */}
+          <div className="absolute inset-0 -inset-x-8 bg-gradient-to-t from-caribbean/20 via-caribbean/5 to-transparent rounded-full blur-3xl opacity-75 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none scale-110" />
 
-          {/* Portrait Container: Solid background completely occludes marquee */}
-          <div className="relative w-48 sm:w-56 md:w-64 lg:w-72 aspect-[3/4] bg-black border border-white/20 rounded-sm overflow-hidden shadow-2xl shadow-black ring-1 ring-white/10 group-hover:border-caribbean/70 transition-all duration-500">
-            
-            {/* The Personal Portrait Image */}
+          {/* Transparent Cutout Image - No Background */}
+          <div className="relative overflow-visible [mask-image:linear-gradient(to_bottom,black_82%,transparent_100%)]">
             <img
               src={heroImageSrc}
-              alt={`${PERSONAL_INFO.name} - Portrait`}
+              alt={`${PERSONAL_INFO.name} - Hero Portrait`}
               onError={(e) => {
                 e.target.onerror = null;
-                e.target.src = '/images/behind_the_frame.jpg';
+                e.target.src = '/images/hero_no_bg.png';
               }}
-              className="w-full h-full object-cover object-top will-change-transform transform transition-transform duration-700 group-hover:scale-105 filter grayscale contrast-110 brightness-95"
+              className="w-64 sm:w-80 md:w-96 lg:w-[420px] xl:w-[460px] h-auto max-h-[62vh] object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.95)] drop-shadow-[0_0_20px_rgba(0,255,163,0.18)] will-change-transform transform transition-transform duration-700 group-hover:scale-105"
             />
-
-            {/* Subtle Vignette & Letterbox Shadow inside portrait */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/35 pointer-events-none" />
-
-            {/* In-Frame Corner Viewfinder Ticks */}
-            <div className="absolute top-2 left-2 w-2.5 h-2.5 border-t border-l border-white/50 pointer-events-none" />
-            <div className="absolute top-2 right-2 w-2.5 h-2.5 border-t border-r border-white/50 pointer-events-none" />
-            <div className="absolute bottom-2 left-2 w-2.5 h-2.5 border-b border-l border-white/50 pointer-events-none" />
-            <div className="absolute bottom-2 right-2 w-2.5 h-2.5 border-b border-r border-white/50 pointer-events-none" />
-
-            {/* In-Frame Header Badge */}
-            <div className="absolute top-3 inset-x-3 flex items-center justify-between font-mono text-[8px] text-zinc-300 tracking-widest uppercase pointer-events-none">
-              <span className="flex items-center space-x-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#acee01] animate-pulse" />
-                <span className="text-[#acee01] font-semibold">RAYEES VISUALS</span>
-              </span>
-              <span className="text-beige font-medium">RAYEES · EYE</span>
-            </div>
-
-            {/* In-Frame Bottom Caption */}
-            <div className="absolute bottom-3 inset-x-3 flex items-center justify-between font-mono text-[9px] text-zinc-300 tracking-widest uppercase pointer-events-none">
-              <span className="text-caribbean font-semibold">4K CINEMA MASTER</span>
-              <span className="text-beige">DIR / DP</span>
-            </div>
           </div>
         </div>
-
-        {/* Role Text (Below Portrait) */}
-        <div
-          ref={subtitleRef}
-          className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-black/80 border border-white/[0.15] backdrop-blur-md text-[11px] md:text-xs font-mono text-white tracking-[0.22em] uppercase mb-4"
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-caribbean animate-ping" />
-          <span>{PERSONAL_INFO.role}</span>
-        </div>
-
-        {/* Short Supporting Line in Beige */}
-        <p
-          ref={introRef}
-          className="text-xs sm:text-sm text-beige font-light max-w-xl mx-auto tracking-wide leading-relaxed mb-6 px-4"
-        >
-          Bridal & Groom Moments · Sacred Nikkah & Engagements · Automotive Cinema · Travel · Culinary Food · Keynote Presentations
-        </p>
-
-        {/* Action CTAs */}
-        <div
-          ref={ctaGroupRef}
-          className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full max-w-md px-4"
-        >
-          {/* Primary View Work CTA in Caribbean Green */}
-          <a
-            href="#work"
-            onClick={playShutterSound}
-            onMouseEnter={playHoverSound}
-            className="w-full sm:w-auto px-7 py-3.5 bg-caribbean hover:bg-white text-black font-mono font-bold text-xs tracking-[0.2em] uppercase transition-all duration-300 shadow-xl shadow-caribbean/20 flex items-center justify-center space-x-2.5 group rounded-sm"
-            data-cursor="EXPLORE"
-          >
-            <span>EXPLORE WORKS</span>
-            <ArrowDown className="w-3.5 h-3.5 transform group-hover:translate-y-1 transition-transform" />
-          </a>
-
-          {/* Showreel Button */}
-          <a
-            href="#showreel"
-            onClick={playShutterSound}
-            onMouseEnter={playHoverSound}
-            className="w-full sm:w-auto px-6 py-3.5 rounded-sm border border-white/20 hover:border-caribbean text-zinc-100 hover:text-caribbean font-mono text-xs tracking-[0.2em] uppercase transition-all duration-300 flex items-center justify-center space-x-2.5 glass-panel group"
-            data-cursor="PLAY"
-          >
-            <Play className="w-3.5 h-3.5 fill-current transform group-hover:scale-110 transition-transform text-caribbean" />
-            <span>WATCH REEL ({PERSONAL_INFO.reelDuration})</span>
-          </a>
-        </div>
-      </div>
-
-      {/* ============================================================
-          LAYER 5: HUD OVERLAYS & CORNER VIEWFINDER DETAILS (z-40)
-          ============================================================ */}
-      <div
-        ref={metaOverlayRef}
-        className="absolute inset-x-6 md:inset-x-12 top-24 md:top-28 flex justify-between items-center pointer-events-none border-t border-b border-white/[0.08] py-2 font-mono text-[10px] md:text-xs text-zinc-400 tracking-widest uppercase z-40"
-      >
-        <div className="flex items-center space-x-3">
-          <span className="flex items-center space-x-1.5 text-caribbean font-semibold animate-pulse">
-            <span className="w-2 h-2 rounded-full bg-caribbean inline-block shadow-[0_0_8px_#acee01]"></span>
-            <span>LIVE ARCHIVE ●</span>
-          </span>
-          <span className="hidden sm:inline text-beige">00:01:24:18</span>
-          <span className="hidden md:inline text-zinc-600">|</span>
-          <span className="hidden md:inline text-zinc-300">2.39:1 CINEMASCOPE</span>
-        </div>
-
-        <div className="flex items-center space-x-4">
-          <span className="text-zinc-300">4K DCI · 24.00 FPS</span>
-          <span className="hidden sm:inline text-zinc-600">|</span>
-          <span className="hidden sm:inline text-beige">ISO 800 · 180° SHUTTER</span>
-          <span className="hidden lg:inline text-caribbean font-semibold">[ACEScc GAMUT]</span>
-        </div>
-      </div>
-
-      {/* Viewfinder Crosshairs in 4 corners */}
-      <div className="absolute inset-8 md:inset-16 pointer-events-none z-40 hidden sm:block">
-        <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-white/20" />
-        <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-white/20" />
-        <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-white/20" />
-        <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-white/20" />
       </div>
     </section>
   );

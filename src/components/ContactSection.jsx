@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Mail, MessageSquare, MapPin, Copy, Check, Send, ArrowUpRight, Sparkles } from 'lucide-react';
+import { Mail, MessageSquare, MapPin, Copy, Check, Send, ArrowUpRight, Sparkles, Download } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { playHoverSound, playShutterSound } from '../utils/audio';
 
@@ -103,6 +103,32 @@ export default function ContactSection() {
           <p className="mt-6 max-w-2xl text-beige font-light text-base md:text-lg">
             Have a wedding ceremony (Nikkah, Engagement, Bride or Groom to Be), birthday gala, automotive film, travel shoot, food commercial, or keynote presentation in need of cinematic storytelling? Let's connect.
           </p>
+
+          {/* Dual CTA strip — CV + WhatsApp */}
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a
+              href="/Muhammed_Rayees_CV.pdf"
+              download="Muhammed_Rayees_CV.pdf"
+              onMouseEnter={playHoverSound}
+              className="inline-flex items-center space-x-2 px-6 py-3 bg-caribbean text-black font-mono font-bold text-xs tracking-[0.2em] uppercase rounded-sm hover:bg-white transition-all duration-300 shadow-lg shadow-caribbean/20"
+              data-cursor="DOWNLOAD"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>DOWNLOAD CV</span>
+            </a>
+
+            <a
+              href={`https://wa.me/${PERSONAL_INFO.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hi Rayees! I came across your portfolio and would like to discuss a project.')}`}
+              target="_blank"
+              rel="noreferrer noopener"
+              onMouseEnter={playHoverSound}
+              className="inline-flex items-center space-x-2 px-6 py-3 bg-transparent border border-white/20 text-white font-mono font-bold text-xs tracking-[0.2em] uppercase rounded-sm hover:border-caribbean hover:text-caribbean transition-all duration-300"
+              data-cursor="WHATSAPP"
+            >
+              <MessageSquare className="w-3.5 h-3.5" />
+              <span>ENQUIRE ON WHATSAPP</span>
+            </a>
+          </div>
         </div>
 
         {/* Contact Form & Channel Grid */}
@@ -223,6 +249,49 @@ export default function ContactSection() {
                 <span className="text-beige text-[11px] block mt-0.5">{PERSONAL_INFO.location}</span>
               </div>
             </div>
+
+            {/* WhatsApp Direct Enquiry Card */}
+            <a
+              href={`https://wa.me/${PERSONAL_INFO.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hi Rayees! I came across your portfolio and would like to discuss a project.')}`}
+              target="_blank"
+              rel="noreferrer noopener"
+              onMouseEnter={playHoverSound}
+              className="group flex items-center justify-between p-5 bg-[#0a1200] border border-caribbean/30 hover:border-caribbean rounded-sm transition-all duration-300 shadow-[0_0_20px_rgba(172,238,1,0.05)] hover:shadow-[0_0_28px_rgba(172,238,1,0.15)]"
+              data-cursor="WHATSAPP"
+            >
+              <div className="flex items-center space-x-3">
+                <div className="w-9 h-9 rounded-sm bg-caribbean/10 border border-caribbean/30 group-hover:border-caribbean flex items-center justify-center transition-colors">
+                  <MessageSquare className="w-4 h-4 text-caribbean" />
+                </div>
+                <div>
+                  <span className="font-mono text-[10px] text-caribbean tracking-widest uppercase block font-semibold">DIRECT ENQUIRY</span>
+                  <span className="font-mono text-xs text-white font-medium">Chat on WhatsApp</span>
+                  <span className="font-mono text-[10px] text-zinc-500 block">{PERSONAL_INFO.phone}</span>
+                </div>
+              </div>
+              <ArrowUpRight className="w-4 h-4 text-caribbean/50 group-hover:text-caribbean transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+            </a>
+
+            {/* CV Download Card */}
+            <a
+              href="/Muhammed_Rayees_CV.pdf"
+              download="Muhammed_Rayees_CV.pdf"
+              onMouseEnter={playHoverSound}
+              className="group flex items-center justify-between p-5 bg-[#070707] border border-white/10 hover:border-caribbean/50 rounded-sm transition-all duration-300"
+              data-cursor="DOWNLOAD"
+            >
+              <div className="flex items-center space-x-3">
+                <div className="w-9 h-9 rounded-sm bg-white/5 border border-white/10 group-hover:border-caribbean/50 flex items-center justify-center transition-colors">
+                  <Download className="w-4 h-4 text-zinc-300 group-hover:text-caribbean transition-colors" />
+                </div>
+                <div>
+                  <span className="font-mono text-[10px] text-beige tracking-widest uppercase block font-semibold">RESUME / CV</span>
+                  <span className="font-mono text-xs text-white font-medium">Muhammed Rayees V</span>
+                  <span className="font-mono text-[10px] text-zinc-500 block">PDF · Download</span>
+                </div>
+              </div>
+              <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-caribbean transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+            </a>
           </div>
 
           {/* Right Column: Interactive Project Inquiry Form */}

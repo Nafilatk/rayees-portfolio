@@ -10,7 +10,7 @@ import Showreel from './components/Showreel';
 import SelectedWorks from './components/SelectedWorks';
 import ProjectModal from './components/ProjectModal';
 import AboutSection from './components/AboutSection';
-import SkillsSection from './components/SkillsSection';
+
 import ExperienceSection from './components/ExperienceSection';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
@@ -75,7 +75,7 @@ export default function App() {
 
         <AboutSection />
 
-        <SkillsSection />
+
 
         <ExperienceSection />
 

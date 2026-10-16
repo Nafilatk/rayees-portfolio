@@ -82,12 +82,7 @@ export default function AboutSection() {
             </h2>
           </div>
 
-          <div className="mt-4 md:mt-0 font-mono text-xs text-zinc-500 tracking-wider">
-            STATUS:{' '}
-            <span className="text-zinc-200">
-              OPEN FOR VIDEO PROJECTS
-            </span>
-          </div>
+     
         </div>
 
         {/* Main Bento Grid */}

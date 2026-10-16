@@ -1,5 +1,10 @@
+
 import React, { useEffect, useRef } from 'react';
-import { X, Play, Sliders, Calendar, Film, Layers, ArrowUpRight, Palette } from 'lucide-react';
+import {
+  X,
+  Film,
+  Palette
+} from 'lucide-react';
 import { playShutterSound } from '../utils/audio';
 
 export default function ProjectModal({ project, onClose }) {
@@ -9,6 +14,7 @@ export default function ProjectModal({ project, onClose }) {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') onClose();
     };
+
     window.addEventListener('keydown', handleKeyDown);
     document.body.style.overflow = 'hidden';
 
@@ -31,7 +37,7 @@ export default function ProjectModal({ project, onClose }) {
         className="relative w-full max-w-5xl bg-black border border-white/15 rounded-sm shadow-2xl overflow-hidden my-auto max-h-[90vh] flex flex-col shadow-[0_0_50px_rgba(0,0,0,0.9)]"
       >
         {/* Top Bar with Cinema Header & Close */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#050505]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#050505] shrink-0">
           <div className="flex items-center space-x-3">
             <span className="w-2 h-2 rounded-full bg-caribbean animate-pulse shadow-[0_0_6px_#acee01]" />
             <span className="font-mono text-xs text-caribbean tracking-widest uppercase font-semibold">
@@ -53,28 +59,37 @@ export default function ProjectModal({ project, onClose }) {
 
         {/* Modal Scrollable Body */}
         <div className="overflow-y-auto p-6 md:p-10 space-y-8 bg-black">
-          
-          {/* Main Media Preview */}
-          <div className="relative w-full aspect-video md:aspect-[2.39/1] bg-black rounded-sm overflow-hidden border border-white/10">
+
+          {/* Main Media Preview - Original Orientation */}
+          <div className="relative w-full flex items-center justify-center bg-black rounded-sm overflow-hidden border border-white/10 min-h-[250px] max-h-[80vh]">
+
             {project.videoUrl ? (
               <video
+                key={project.videoUrl}
                 src={project.videoUrl}
                 poster={project.thumbnail}
                 controls
                 autoPlay
                 loop
-                className="w-full h-full object-cover"
+                playsInline
+                className="block w-auto h-auto max-w-full max-h-[70vh] object-contain"
+                style={{
+                  width: 'auto',
+                  height: 'auto',
+                  aspectRatio: 'auto'
+                }}
               />
             ) : (
               <img
                 src={project.thumbnail}
                 alt={project.title}
-                className="w-full h-full object-cover"
+                className="block w-auto h-auto max-w-full max-h-[70vh] object-contain"
               />
             )}
 
-            <div className="absolute bottom-3 left-4 px-3 py-1 bg-black/85 backdrop-blur-md border border-white/15 font-mono text-[10px] text-beige tracking-widest uppercase font-medium">
-              {project.aspectRatio || "2.39:1 CINEMASCOPE"}
+            {/* Aspect Ratio Badge */}
+            <div className="absolute bottom-3 left-4 px-3 py-1 bg-black/85 backdrop-blur-md border border-white/15 font-mono text-[10px] text-beige tracking-widest uppercase font-medium pointer-events-none">
+              {project.aspectRatio || 'ORIGINAL ASPECT RATIO'}
             </div>
           </div>
 
@@ -86,9 +101,11 @@ export default function ProjectModal({ project, onClose }) {
                 <span className="text-zinc-600">·</span>
                 <span className="text-beige">{project.year}</span>
               </div>
+
               <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-white tracking-tight uppercase">
                 {project.title}
               </h2>
+
               <p className="text-zinc-200 font-light leading-relaxed text-base md:text-lg">
                 {project.fullDesc || project.shortDesc}
               </p>
@@ -96,47 +113,68 @@ export default function ProjectModal({ project, onClose }) {
 
             {/* Quick Specs Column */}
             <div className="bg-[#070707] p-6 rounded-sm border border-white/10 space-y-4 font-mono text-xs shadow-xl">
+
               <div className="border-b border-white/10 pb-3">
-                <div className="text-beige text-[10px] tracking-widest uppercase font-medium">MY ROLE</div>
-                <div className="text-white font-medium mt-1">{project.role}</div>
+                <div className="text-beige text-[10px] tracking-widest uppercase font-medium">
+                  MY ROLE
+                </div>
+                <div className="text-white font-medium mt-1">
+                  {project.role}
+                </div>
               </div>
 
               <div className="border-b border-white/10 pb-3">
-                <div className="text-beige text-[10px] tracking-widest uppercase font-medium">COMMISSION / CLIENT</div>
-                <div className="text-white font-medium mt-1">{project.client}</div>
+                <div className="text-beige text-[10px] tracking-widest uppercase font-medium">
+                  COMMISSION / CLIENT
+                </div>
+                <div className="text-white font-medium mt-1">
+                  {project.client}
+                </div>
               </div>
 
               <div className="border-b border-white/10 pb-3">
-                <div className="text-beige text-[10px] tracking-widest uppercase font-medium">PRIMARY TOOLS</div>
+                <div className="text-beige text-[10px] tracking-widest uppercase font-medium">
+                  PRIMARY TOOLS
+                </div>
                 <div className="text-caribbean font-medium mt-1">
-                  {project.tools.join(" · ")}
+                  {project.tools.join(' · ')}
                 </div>
               </div>
 
               {project.duration && (
                 <div>
-                  <div className="text-beige text-[10px] tracking-widest uppercase font-medium">RUNTIME / SPEC</div>
-                  <div className="text-white font-medium mt-1">{project.duration}</div>
+                  <div className="text-beige text-[10px] tracking-widest uppercase font-medium">
+                    RUNTIME / SPEC
+                  </div>
+                  <div className="text-white font-medium mt-1">
+                    {project.duration}
+                  </div>
                 </div>
               )}
             </div>
           </div>
 
-          {/* Color Grading Palette Palette */}
+          {/* Color Grading Palette */}
           {project.colorPalette && (
             <div className="space-y-3">
               <div className="flex items-center space-x-2 font-mono text-xs text-beige tracking-widest uppercase font-medium">
                 <Palette className="w-3.5 h-3.5 text-caribbean" />
                 <span>COLOR TEMPERATURE & LOOK GRADE</span>
               </div>
+
               <div className="flex items-center space-x-3">
                 {project.colorPalette.map((color, idx) => (
-                  <div key={idx} className="flex flex-col items-center space-y-1.5">
+                  <div
+                    key={idx}
+                    className="flex flex-col items-center space-y-1.5"
+                  >
                     <div
                       className="w-12 h-10 sm:w-16 sm:h-12 rounded-sm border border-white/20 shadow-lg"
                       style={{ backgroundColor: color }}
                     />
-                    <span className="font-mono text-[10px] text-zinc-400">{color}</span>
+                    <span className="font-mono text-[10px] text-zinc-400">
+                      {color}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -146,10 +184,12 @@ export default function ProjectModal({ project, onClose }) {
           {/* Production Stills / Visual Gallery */}
           {project.stills && project.stills.length > 0 && (
             <div className="space-y-4 pt-4">
+
               <div className="font-mono text-xs text-beige tracking-widest uppercase flex items-center space-x-2 font-medium">
                 <Film className="w-3.5 h-3.5 text-caribbean" />
                 <span>PRODUCTION STILLS & FRAMES</span>
               </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {project.stills.map((img, i) => (
                   <div
@@ -162,6 +202,7 @@ export default function ProjectModal({ project, onClose }) {
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
                     />
+
                     <div className="absolute top-2 right-2 px-2 py-0.5 bg-black/80 font-mono text-[9px] text-beige border border-white/10">
                       FRAME 0{i + 1}
                     </div>
@@ -170,6 +211,7 @@ export default function ProjectModal({ project, onClose }) {
               </div>
             </div>
           )}
+
         </div>
       </div>
     </div>
