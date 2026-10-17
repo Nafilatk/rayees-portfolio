@@ -5,7 +5,7 @@
 @layer base {
   :root {
     --color-bg: #000000;
-    --color-surface: #050505;
+    --color-surface: #000000;
     --color-border: rgba(255, 255, 255, 0.08);
     --color-accent: #acee01;
     --color-accent-dark: #62a30d;
@@ -71,7 +71,7 @@
 
 /* Glassmorphism for minimal pure black cinematic UI */
 .glass-panel {
-  background: rgba(5, 5, 5, 0.85);
+  background: rgba(0, 0, 0, 0.9);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.07);
@@ -113,4 +113,25 @@
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Circular text rotation for Hero portrait badge */
+@keyframes spinCircularText {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spinCircularText 32s linear infinite;
+  transform-origin: center center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-spin-slow {
+    animation: none;
+  }
 }

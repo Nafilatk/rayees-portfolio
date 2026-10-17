@@ -347,16 +347,16 @@ export default function Showreel() {
     <section
       id="showreel"
       ref={sectionRef}
-      className="relative border-t border-white/[0.08] bg-black px-6 py-28 md:px-12 md:py-36"
+      className="relative border-t border-white/[0.08] bg-black px-4 sm:px-6 md:px-12 py-10 sm:py-14 md:py-16"
     >
       <div className="mx-auto max-w-7xl">
         {/* Section header */}
         <div
           ref={titleRef}
-          className="mb-12 flex flex-col justify-between border-b border-white/[0.08] pb-8 md:flex-row md:items-end"
+          className="mb-6 flex flex-col justify-between border-b border-white/[0.08] pb-5 md:flex-row md:items-end"
         >
           <div>
-            <div className="mb-3 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.3em] text-caribbean">
+            <div className="mb-2 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.3em] text-caribbean">
               <Film className="h-4 w-4" />
               <span>Director's Showcase // 2026</span>
             </div>
@@ -365,13 +365,13 @@ export default function Showreel() {
               SHOWREEL
             </h2>
 
-            <p className="mt-2 text-xs font-light uppercase tracking-wider text-beige md:text-sm">
+            <p className="mt-1.5 text-xs font-light uppercase tracking-wider text-beige md:text-sm">
               Highlights of Nikkah, Bridal & Groom Cinema, Automotive,
               Travel, Food & Presentations
             </p>
           </div>
 
-          <div className="mt-6 space-y-3 md:mt-0">
+          <div className="mt-4 space-y-2.5 md:mt-0">
             <input
               ref={fileInputRef}
               type="file"
@@ -384,7 +384,7 @@ export default function Showreel() {
               type="button"
               onClick={() => fileInputRef.current?.click()}
               onMouseEnter={playHoverSound}
-              className="flex items-center gap-2 rounded-sm border border-white/15 bg-[#0a0a0a] px-3 py-2 font-mono text-[11px] tracking-wider text-zinc-300 transition-colors hover:bg-caribbean hover:text-black"
+              className="flex items-center gap-2 rounded-sm border border-white/15 bg-black px-3 py-2 font-mono text-[11px] tracking-wider text-zinc-300 transition-colors hover:bg-caribbean hover:text-black"
             >
               <Upload className="h-3 w-3" />
               LOAD / CHANGE VIDEO
@@ -522,95 +522,7 @@ export default function Showreel() {
             </span>
           </div>
 
-          {/* Custom playback controls */}
-          <div
-            onClick={(event) => event.stopPropagation()}
-            className="absolute bottom-8 left-3 right-3 z-30 flex flex-col gap-3 rounded-sm border border-white/10 bg-black/90 p-3 backdrop-blur-md sm:bottom-10 sm:left-6 sm:right-6 sm:p-4"
-          >
-            {/* Progress bar */}
-            <button
-              type="button"
-              onClick={handleSeek}
-              aria-label="Seek video timeline"
-              className="group/bar relative h-2 w-full cursor-pointer overflow-hidden rounded-full bg-zinc-800"
-            >
-              <span
-                ref={progressFillRef}
-                className="absolute left-0 top-0 h-full rounded-full bg-caribbean pointer-events-none"
-                style={{ width: '0%' }}
-              />
 
-              <span
-                ref={progressThumbRef}
-                className="absolute top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-white opacity-0 shadow-lg transition-opacity group-hover/bar:opacity-100 pointer-events-none"
-                style={{
-                  left: '0%',
-                }}
-              />
-            </button>
-
-            {/* Buttons and time */}
-            <div className="flex items-center justify-between gap-2 font-mono text-xs text-zinc-300">
-              <div className="flex min-w-0 items-center gap-3 sm:gap-5">
-                {/* Play / Pause / Resume */}
-                <button
-                  type="button"
-                  onClick={togglePlay}
-                  title={isPlaying ? 'Pause' : 'Play / Resume'}
-                  aria-label={isPlaying ? 'Pause video' : 'Play video'}
-                  className="shrink-0 p-1 text-white transition-colors hover:text-caribbean"
-                >
-                  {isPlaying ? (
-                    <Pause className="h-5 w-5" />
-                  ) : (
-                    <Play className="h-5 w-5 fill-current text-caribbean" />
-                  )}
-                </button>
-
-                {/* Replay */}
-                <button
-                  type="button"
-                  onClick={handleRestart}
-                  title="Replay from beginning"
-                  aria-label="Replay video"
-                  className="shrink-0 p-1 text-zinc-400 transition-colors hover:text-caribbean"
-                >
-                  <RotateCcw className="h-4 w-4" />
-                </button>
-
-                {/* Mute / Unmute */}
-                <button
-                  type="button"
-                  onClick={toggleAudio}
-                  title={isMuted ? 'Unmute audio' : 'Mute audio'}
-                  aria-label={isMuted ? 'Unmute video' : 'Mute video'}
-                  className="shrink-0 p-1 transition-colors hover:text-caribbean"
-                >
-                  {isMuted ? (
-                    <VolumeX className="h-5 w-5 text-zinc-400" />
-                  ) : (
-                    <Volume2 className="h-5 w-5 text-caribbean" />
-                  )}
-                </button>
-
-                {/* Current time and total duration */}
-                <span ref={bottomTimecodeRef} className="whitespace-nowrap text-[10px] text-zinc-400 sm:text-xs">
-                  00:00:00 / {formatTime(duration)}
-                </span>
-              </div>
-
-              {/* Fullscreen */}
-              <button
-                type="button"
-                onClick={handleFullScreen}
-                title="Toggle fullscreen"
-                aria-label="Toggle fullscreen"
-                className="shrink-0 p-1 text-zinc-400 transition-colors hover:text-caribbean"
-              >
-                <Maximize2 className="h-5 w-5" />
-              </button>
-            </div>
-          </div>
         </div>
 
         {/* Video error message */}

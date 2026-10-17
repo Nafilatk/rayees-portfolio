@@ -15,7 +15,7 @@ import { playHoverSound, playShutterSound } from '../utils/audio';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function AboutSection() {
+export default function AboutSection({ onOpenContact }) {
   const sectionRef = useRef(null);
 
   useEffect(() => {
@@ -62,17 +62,14 @@ export default function AboutSection() {
     <section
       id="about"
       ref={sectionRef}
-      className="relative py-16 sm:py-24 md:py-36 px-4 sm:px-6 md:px-12 bg-black border-t border-white/[0.08] overflow-hidden"
+      className="relative py-10 sm:py-14 md:py-16 px-4 sm:px-6 md:px-12 bg-black border-t border-white/[0.08] overflow-hidden"
     >
-      {/* Cinematic ambient lighting */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-caribbean/[0.04] rounded-full blur-3xl pointer-events-none" />
-
       <div className="max-w-7xl mx-auto relative z-10">
 
         {/* Section Header */}
-        <div className="about-header-anim flex flex-col md:flex-row md:items-end justify-between mb-16 border-b border-white/[0.08] pb-8">
+        <div className="about-header-anim flex flex-col md:flex-row md:items-end justify-between mb-8 border-b border-white/[0.08] pb-5">
           <div>
-            <div className="flex items-center space-x-2 font-mono text-xs text-cinema-gold tracking-[0.3em] uppercase mb-3">
+            <div className="flex items-center space-x-2 font-mono text-xs text-cinema-gold tracking-[0.3em] uppercase mb-2">
               <span className="w-2 h-2 rounded-full bg-cinema-gold animate-pulse" />
               <span>CREATIVE PROFILE // 01</span>
             </div>
@@ -81,23 +78,21 @@ export default function AboutSection() {
               BEHIND THE FRAME.
             </h2>
           </div>
-
-     
         </div>
 
         {/* Main Bento Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
 
           {/* Main Bio */}
-          <div className="about-card-anim lg:col-span-7 bg-[#0b0b10] border border-white/[0.08] hover:border-white/20 p-8 sm:p-10 rounded-sm flex flex-col justify-between transition-all duration-300 relative group">
+          <div className="about-card-anim lg:col-span-7 bg-black border border-white/[0.08] hover:border-white/20 p-6 sm:p-8 rounded-sm flex flex-col justify-between transition-all duration-300 relative group">
 
             <div className="absolute top-3 right-3 font-mono text-[9px] text-zinc-600 tracking-widest uppercase">
               CREATIVE STATEMENT // 01
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-5">
               <div>
-                <span className="font-mono text-xs text-cinema-gold tracking-widest uppercase block mb-3">
+                <span className="font-mono text-xs text-cinema-gold tracking-widest uppercase block mb-2">
                   VIDEO EDITOR · VIDEOGRAPHER · VISUAL STORYTELLER
                 </span>
 
@@ -106,7 +101,7 @@ export default function AboutSection() {
                 </h3>
               </div>
 
-              <div className="space-y-4 text-zinc-300 font-light text-sm sm:text-base leading-relaxed">
+              <div className="space-y-3.5 text-zinc-300 font-light text-xs sm:text-sm leading-relaxed">
                 <p>
                   I'm a Video Editor and Videographer passionate about
                   capturing moments, crafting cinematic visuals, and
@@ -120,7 +115,7 @@ export default function AboutSection() {
                   with creative storytelling to make every frame count.
                 </p>
 
-                <p className="text-zinc-400 text-sm">
+                <p className="text-zinc-400 text-xs">
                   From cinematic sequences and Instagram Reels to
                   promotional videos and behind-the-scenes moments,
                   I aim to transform ideas and raw footage into
@@ -130,35 +125,35 @@ export default function AboutSection() {
             </div>
 
             {/* Education and Training */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-8 mt-8 border-t border-white/[0.06] font-mono text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-6 mt-6 border-t border-white/[0.06] font-mono text-xs">
 
-              <div className="flex items-start space-x-3 p-3 bg-white/[0.02] border border-white/[0.04] rounded-xs">
+              <div className="flex items-start space-x-3 p-3 bg-black border border-white/[0.06] rounded-xs">
                 <GraduationCap className="w-4 h-4 text-cinema-gold flex-shrink-0 mt-0.5" />
 
                 <div>
                   <span className="text-zinc-500 text-[10px] tracking-wider uppercase block">
                     EDUCATION
                   </span>
-                  <span className="text-zinc-200 font-medium block mt-1">
+                  <span className="text-zinc-200 font-medium block mt-0.5">
                     B.Com (Computer Application)
                   </span>
-                  <span className="text-zinc-500 text-[10px] block mt-1">
+                  <span className="text-zinc-500 text-[10px] block mt-0.5">
                     Calicut University · 2022–2025
                   </span>
                 </div>
               </div>
 
-              <div className="flex items-start space-x-3 p-3 bg-white/[0.02] border border-white/[0.04] rounded-xs">
+              <div className="flex items-start space-x-3 p-3 bg-black border border-white/[0.06] rounded-xs">
                 <Award className="w-4 h-4 text-cinema-gold flex-shrink-0 mt-0.5" />
 
                 <div>
                   <span className="text-zinc-500 text-[10px] tracking-wider uppercase block">
                     PROFESSIONAL TRAINING
                   </span>
-                  <span className="text-zinc-200 font-medium block mt-1">
+                  <span className="text-zinc-200 font-medium block mt-0.5">
                     Digital Marketing & Designing
                   </span>
-                  <span className="text-zinc-500 text-[10px] block mt-1">
+                  <span className="text-zinc-500 text-[10px] block mt-0.5">
                     Adi Group of Institute · 2026
                   </span>
                 </div>
@@ -168,9 +163,9 @@ export default function AboutSection() {
           </div>
 
           {/* Editorial Photo Frame */}
-          <div className="about-card-anim lg:col-span-5 bg-[#0b0b10] border border-white/[0.08] hover:border-cinema-gold/40 p-6 rounded-sm flex flex-col justify-between transition-all duration-500 relative group overflow-hidden">
+          <div className="about-card-anim lg:col-span-5 bg-black border border-white/[0.08] hover:border-cinema-gold/40 p-5 rounded-sm flex flex-col justify-between transition-all duration-500 relative group overflow-hidden">
 
-            <div className="relative aspect-[4/5] sm:aspect-[3/4] w-full bg-zinc-950 rounded-xs overflow-hidden border border-white/10 shadow-2xl">
+            <div className="relative aspect-[4/5] sm:aspect-[3/4] w-full bg-black rounded-xs overflow-hidden border border-white/10 shadow-2xl">
 
               <img
                 src="/images/aboutimage.jpeg"
@@ -206,7 +201,7 @@ export default function AboutSection() {
             </div>
 
             {/* Photo Footer */}
-            <div className="mt-4 p-4 bg-[#111118] border border-cinema-gold/30 rounded-xs flex items-center justify-between font-mono text-xs">
+            <div className="mt-4 p-3.5 bg-black border border-cinema-gold/30 rounded-xs flex items-center justify-between font-mono text-xs">
               <div>
                 <span className="text-[10px] text-zinc-500 uppercase tracking-widest block">
                   CREATIVE SPECIALIZATION
@@ -218,7 +213,10 @@ export default function AboutSection() {
 
               <a
                 href="#contact"
-                onClick={playShutterSound}
+                onClick={() => {
+                  playShutterSound();
+                  if (onOpenContact) onOpenContact();
+                }}
                 onMouseEnter={playHoverSound}
                 className="inline-flex items-center space-x-1 px-3 py-2 bg-cinema-gold text-black text-[11px] font-bold tracking-wider rounded-xs hover:bg-white transition-colors"
                 data-cursor="CONTACT"
@@ -230,12 +228,12 @@ export default function AboutSection() {
           </div>
 
           {/* Discipline 1: Videography */}
-          <div className="about-card-anim lg:col-span-4 bg-[#0b0b10] border border-white/[0.08] hover:border-cinema-gold/40 p-6 sm:p-8 rounded-sm flex flex-col justify-between transition-all duration-300 group">
+          <div className="about-card-anim lg:col-span-4 bg-black border border-white/[0.08] hover:border-cinema-gold/40 p-5 sm:p-6 rounded-sm flex flex-col justify-between transition-all duration-300 group">
 
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-10 h-10 rounded-sm bg-white/[0.03] border border-white/10 flex items-center justify-center text-cinema-gold group-hover:border-cinema-gold transition-colors">
-                  <Camera className="w-5 h-5" />
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-9 h-9 rounded-sm bg-black border border-white/10 flex items-center justify-center text-cinema-gold group-hover:border-cinema-gold transition-colors">
+                  <Camera className="w-4 h-4" />
                 </div>
 
                 <span className="font-mono text-xs text-cinema-gold font-semibold tracking-widest">
@@ -247,32 +245,32 @@ export default function AboutSection() {
                 VIDEOGRAPHY
               </h4>
 
-              <p className="text-zinc-400 font-light text-xs sm:text-sm leading-relaxed mb-6">
+              <p className="text-zinc-400 font-light text-xs sm:text-sm leading-relaxed mb-4">
                 Capturing moments with thoughtful framing, camera
                 movement, composition, and a focus on visual storytelling.
               </p>
             </div>
 
-            <div className="pt-4 border-t border-white/[0.06] flex flex-wrap gap-1.5 font-mono text-[10px] text-zinc-400">
-              <span className="px-2 py-1 bg-white/[0.02] border border-white/[0.05] rounded-xs">
+            <div className="pt-3 border-t border-white/[0.06] flex flex-wrap gap-1.5 font-mono text-[10px] text-zinc-400">
+              <span className="px-2 py-1 bg-black border border-white/10 rounded-xs">
                 Camera Work
               </span>
-              <span className="px-2 py-1 bg-white/[0.02] border border-white/[0.05] rounded-xs">
+              <span className="px-2 py-1 bg-black border border-white/10 rounded-xs">
                 Composition
               </span>
-              <span className="px-2 py-1 bg-white/[0.02] border border-white/[0.05] rounded-xs">
+              <span className="px-2 py-1 bg-black border border-white/10 rounded-xs">
                 Framing
               </span>
             </div>
           </div>
 
           {/* Discipline 2: Video Editing */}
-          <div className="about-card-anim lg:col-span-4 bg-[#0b0b10] border border-white/[0.08] hover:border-cinema-gold/40 p-6 sm:p-8 rounded-sm flex flex-col justify-between transition-all duration-300 group">
+          <div className="about-card-anim lg:col-span-4 bg-black border border-white/[0.08] hover:border-cinema-gold/40 p-5 sm:p-6 rounded-sm flex flex-col justify-between transition-all duration-300 group">
 
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-10 h-10 rounded-sm bg-white/[0.03] border border-white/10 flex items-center justify-center text-cinema-gold group-hover:border-cinema-gold transition-colors">
-                  <Clapperboard className="w-5 h-5" />
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-9 h-9 rounded-sm bg-black border border-white/10 flex items-center justify-center text-cinema-gold group-hover:border-cinema-gold transition-colors">
+                  <Clapperboard className="w-4 h-4" />
                 </div>
 
                 <span className="font-mono text-xs text-cinema-gold font-semibold tracking-widest">
@@ -284,33 +282,33 @@ export default function AboutSection() {
                 VIDEO EDITING
               </h4>
 
-              <p className="text-zinc-400 font-light text-xs sm:text-sm leading-relaxed mb-6">
+              <p className="text-zinc-400 font-light text-xs sm:text-sm leading-relaxed mb-4">
                 Shaping raw footage into polished videos with engaging
                 pacing, clean transitions, audio synchronization, and
                 creative storytelling.
               </p>
             </div>
 
-            <div className="pt-4 border-t border-white/[0.06] flex flex-wrap gap-1.5 font-mono text-[10px] text-zinc-400">
-              <span className="px-2 py-1 bg-white/[0.02] border border-white/[0.05] rounded-xs">
+            <div className="pt-3 border-t border-white/[0.06] flex flex-wrap gap-1.5 font-mono text-[10px] text-zinc-400">
+              <span className="px-2 py-1 bg-black border border-white/10 rounded-xs">
                 Editing
               </span>
-              <span className="px-2 py-1 bg-white/[0.02] border border-white/[0.05] rounded-xs">
+              <span className="px-2 py-1 bg-black border border-white/10 rounded-xs">
                 Transitions
               </span>
-              <span className="px-2 py-1 bg-white/[0.02] border border-white/[0.05] rounded-xs">
+              <span className="px-2 py-1 bg-black border border-white/10 rounded-xs">
                 Sound Design
               </span>
             </div>
           </div>
 
           {/* Discipline 3: Cinematic Storytelling */}
-          <div className="about-card-anim lg:col-span-4 bg-[#0b0b10] border border-white/[0.08] hover:border-cinema-gold/40 p-6 sm:p-8 rounded-sm flex flex-col justify-between transition-all duration-300 group">
+          <div className="about-card-anim lg:col-span-4 bg-black border border-white/[0.08] hover:border-cinema-gold/40 p-5 sm:p-6 rounded-sm flex flex-col justify-between transition-all duration-300 group">
 
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-10 h-10 rounded-sm bg-white/[0.03] border border-white/10 flex items-center justify-center text-cinema-gold group-hover:border-cinema-gold transition-colors">
-                  <Film className="w-5 h-5" />
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-9 h-9 rounded-sm bg-black border border-white/10 flex items-center justify-center text-cinema-gold group-hover:border-cinema-gold transition-colors">
+                  <Film className="w-4 h-4" />
                 </div>
 
                 <span className="font-mono text-xs text-cinema-gold font-semibold tracking-widest">
@@ -322,20 +320,20 @@ export default function AboutSection() {
                 VISUAL STORYTELLING
               </h4>
 
-              <p className="text-zinc-400 font-light text-xs sm:text-sm leading-relaxed mb-6">
+              <p className="text-zinc-400 font-light text-xs sm:text-sm leading-relaxed mb-4">
                 Creating visual narratives through shot selection,
                 rhythm, atmosphere, color, and carefully crafted sequences.
               </p>
             </div>
 
-            <div className="pt-4 border-t border-white/[0.06] flex flex-wrap gap-1.5 font-mono text-[10px] text-zinc-400">
-              <span className="px-2 py-1 bg-white/[0.02] border border-white/[0.05] rounded-xs">
+            <div className="pt-3 border-t border-white/[0.06] flex flex-wrap gap-1.5 font-mono text-[10px] text-zinc-400">
+              <span className="px-2 py-1 bg-black border border-white/10 rounded-xs">
                 Cinematic
               </span>
-              <span className="px-2 py-1 bg-white/[0.02] border border-white/[0.05] rounded-xs">
+              <span className="px-2 py-1 bg-black border border-white/10 rounded-xs">
                 Color
               </span>
-              <span className="px-2 py-1 bg-white/[0.02] border border-white/[0.05] rounded-xs">
+              <span className="px-2 py-1 bg-black border border-white/10 rounded-xs">
                 Storytelling
               </span>
             </div>

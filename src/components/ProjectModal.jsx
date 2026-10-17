@@ -37,7 +37,7 @@ export default function ProjectModal({ project, onClose }) {
         className="relative w-full max-w-5xl bg-black border border-white/15 rounded-sm shadow-2xl overflow-hidden my-auto max-h-[90vh] flex flex-col shadow-[0_0_50px_rgba(0,0,0,0.9)]"
       >
         {/* Top Bar with Cinema Header & Close */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#050505] shrink-0">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-black shrink-0">
           <div className="flex items-center space-x-3">
             <span className="w-2 h-2 rounded-full bg-caribbean animate-pulse shadow-[0_0_6px_#acee01]" />
             <span className="font-mono text-xs text-caribbean tracking-widest uppercase font-semibold">
@@ -112,7 +112,7 @@ export default function ProjectModal({ project, onClose }) {
             </div>
 
             {/* Quick Specs Column */}
-            <div className="bg-[#070707] p-6 rounded-sm border border-white/10 space-y-4 font-mono text-xs shadow-xl">
+            <div className="bg-black p-6 rounded-sm border border-white/10 space-y-4 font-mono text-xs shadow-xl">
 
               <div className="border-b border-white/10 pb-3">
                 <div className="text-beige text-[10px] tracking-widest uppercase font-medium">

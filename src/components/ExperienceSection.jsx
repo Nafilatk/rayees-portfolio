@@ -110,17 +110,14 @@ export default function ExperienceSection() {
     <section
       id="experience"
       ref={sectionRef}
-      className="relative py-20 sm:py-28 md:py-40 px-4 sm:px-6 md:px-12 bg-black border-t border-white/[0.07] overflow-hidden select-none w-full"
+      className="relative py-10 sm:py-14 md:py-16 px-4 sm:px-6 md:px-12 bg-black border-t border-white/[0.07] overflow-hidden select-none w-full"
     >
-      {/* Subtle ambient glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#acee01]/[0.03] rounded-full blur-[120px] pointer-events-none" />
-
       <div className="max-w-7xl mx-auto relative z-10">
 
         {/* HEADER ROW */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-14 sm:mb-20">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8 sm:mb-10">
           <div>
-            <div className="sw-label-anim flex items-center gap-2 font-mono text-[11px] text-[#acee01] tracking-[0.25em] uppercase mb-4 sm:mb-5">
+            <div className="sw-label-anim flex items-center gap-2 font-mono text-[11px] text-[#acee01] tracking-[0.25em] uppercase mb-3">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                 <rect x="1" y="1" width="12" height="12" rx="1" stroke="#acee01" strokeWidth="1.2" />
                 <path d="M4 4h6M4 7h6M4 10h3" stroke="#acee01" strokeWidth="1.2" strokeLinecap="round" />
@@ -134,24 +131,23 @@ export default function ExperienceSection() {
             </div>
             <div className="overflow-hidden">
               <h2 className="sw-headline-anim font-display font-black text-[clamp(2.2rem,6vw,5.5rem)] text-white tracking-tighter uppercase flex items-center gap-4" style={{ lineHeight: 0.88 }}>
-                
-                <span className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-[#acee01] inline-block flex-shrink-0" style={{ marginBottom: '0.15em' }} />
+                <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#acee01] inline-block flex-shrink-0" style={{ marginBottom: '0.15em' }} />
               </h2>
             </div>
           </div>
 
           {/* Filter pills */}
-          <div className="flex flex-wrap gap-2 lg:flex-col lg:items-end lg:gap-2.5 lg:pb-2">
+          <div className="flex flex-wrap gap-2 lg:flex-col lg:items-end lg:gap-2">
             {FILTERS.map((f) => (
               <button
                 key={f.id}
                 type="button"
                 onClick={() => handleFilterChange(f.id)}
                 onMouseEnter={playHoverSound}
-                className={`sw-filter-anim font-mono font-bold text-[11px] sm:text-xs tracking-[0.18em] uppercase px-4 py-2 sm:px-5 sm:py-2.5 border transition-all duration-200 cursor-pointer ${
+                className={`sw-filter-anim font-mono font-bold text-[10px] sm:text-xs tracking-[0.16em] uppercase px-3.5 py-1.5 sm:px-4 sm:py-2 border transition-all duration-200 cursor-pointer ${
                   activeFilter === f.id
                     ? 'bg-[#acee01] text-black border-[#acee01]'
-                    : 'bg-transparent text-zinc-300 border-white/20 hover:border-white/50 hover:text-white'
+                    : 'bg-black text-zinc-300 border-white/20 hover:border-white/50 hover:text-white'
                 }`}
               >
                 {f.label}
@@ -161,7 +157,7 @@ export default function ExperienceSection() {
         </div>
 
         {/* DIVIDER */}
-        <div className="w-full h-px bg-white/[0.08] mb-10 sm:mb-12" />
+        <div className="w-full h-px bg-white/[0.08] mb-6 sm:mb-8" />
 
         {/* WORKS LIST */}
         <div className="space-y-0">
@@ -169,7 +165,7 @@ export default function ExperienceSection() {
             <div
               key={work.id}
               className={`sw-card group relative border-b border-white/[0.08] transition-all duration-500 cursor-default ${
-                hoveredWork === work.id ? 'bg-white/[0.025]' : ''
+                hoveredWork === work.id ? 'bg-white/[0.02]' : 'bg-black'
               }`}
               onMouseEnter={() => { setHoveredWork(work.id); playHoverSound(); }}
               onMouseLeave={() => setHoveredWork(null)}
@@ -177,7 +173,7 @@ export default function ExperienceSection() {
               {/* Lime left bar on hover */}
               <div className={`absolute left-0 top-0 bottom-0 w-[3px] bg-[#acee01] transition-all duration-300 ${hoveredWork === work.id ? 'opacity-100' : 'opacity-0'}`} />
 
-              <div className="py-8 sm:py-10 pl-6 sm:pl-8 pr-4 grid grid-cols-12 gap-4 sm:gap-6 items-start">
+              <div className="py-5 sm:py-6 pl-4 sm:pl-6 pr-4 grid grid-cols-12 gap-3 sm:gap-5 items-start">
                 {/* Index */}
                 <div className="col-span-2 sm:col-span-1">
                   <span className="font-mono text-xs sm:text-sm text-zinc-600 font-semibold">{work.index}</span>

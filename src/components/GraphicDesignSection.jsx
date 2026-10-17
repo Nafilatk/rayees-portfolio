@@ -114,7 +114,7 @@ export default function GraphicDesignSection() {
               data-cursor="INSPECT"
             >
               {/* Media Preview Box (3:4 Poster or 1:1) */}
-              <div className="relative aspect-[3/4] bg-zinc-950 overflow-hidden">
+              <div className="relative aspect-[3/4] bg-black overflow-hidden">
                 <img
                   src={item.image}
                   alt={item.title}

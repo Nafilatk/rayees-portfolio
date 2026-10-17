@@ -5,7 +5,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import ThreeCanvas from './components/ThreeCanvas';
 import Showreel from './components/Showreel';
 import SelectedWorks from './components/SelectedWorks';
 import ProjectModal from './components/ProjectModal';
@@ -16,10 +15,23 @@ import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import CustomCursor from './components/CustomCursor';
 
+import ResumeModal from './components/ResumeModal';
+
 gsap.registerPlugin(ScrollTrigger);
 
 export default function App() {
   const [selectedProject, setSelectedProject] = useState(null);
+  const [isContactOpen, setIsContactOpen] = useState(false);
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
+
+  const handleOpenContact = () => {
+    setIsContactOpen(true);
+    setTimeout(() => {
+      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+      const firstInput = document.querySelector('#contact-form-side input');
+      if (firstInput) firstInput.focus();
+    }, 100);
+  };
 
   useEffect(() => {
     // Initialize Lenis smooth scroll
@@ -55,13 +67,11 @@ export default function App() {
       {/* Custom Follower Cursor */}
       <CustomCursor />
 
-      {/* Floating 3D Lens Background Object (Subtle & Non-distracting) */}
-      <div className="absolute top-0 left-0 right-0 h-screen pointer-events-none z-10 overflow-hidden">
-        <ThreeCanvas />
-      </div>
-
       {/* Header Navigation */}
-      <Navbar />
+      <Navbar
+        onOpenContact={handleOpenContact}
+        onOpenResume={() => setIsResumeOpen(true)}
+      />
 
       {/* Main Content Layout */}
       <main className="relative z-20">
@@ -73,13 +83,15 @@ export default function App() {
 
         <SelectedWorks onSelectProject={(project) => setSelectedProject(project)} />
 
-        <AboutSection />
-
-
+        <AboutSection onOpenContact={handleOpenContact} />
 
         <ExperienceSection />
 
-        <ContactSection />
+        <ContactSection
+          isOpen={isContactOpen}
+          onToggleContact={() => setIsContactOpen(prev => !prev)}
+          onOpenResume={() => setIsResumeOpen(true)}
+        />
       </main>
 
       {/* Footer */}
@@ -92,6 +104,12 @@ export default function App() {
           onClose={() => setSelectedProject(null)}
         />
       )}
+
+      {/* Interactive Curriculum Vitae / Resume Modal */}
+      <ResumeModal
+        isOpen={isResumeOpen}
+        onClose={() => setIsResumeOpen(false)}
+      />
     </div>
   );
 }

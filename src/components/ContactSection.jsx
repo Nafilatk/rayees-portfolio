@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Mail, MessageSquare, MapPin, Copy, Check, Send, ArrowUpRight, Sparkles, Download } from 'lucide-react';
+import { Mail, MapPin, Copy, Check, Send, ArrowUpRight, Sparkles, Download, Eye, ChevronDown } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { playHoverSound, playShutterSound } from '../utils/audio';
 
@@ -24,27 +24,31 @@ const LinkedinIcon = ({ className }) => (
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function ContactSection() {
+export default function ContactSection({ isOpen, onToggleContact, onOpenResume }) {
   const sectionRef = useRef(null);
+  const formContainerRef = useRef(null);
+  const [internalOpen, setInternalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [selectedService, setSelectedService] = useState('Nikkah Ceremony');
   const [formData, setFormData] = useState({ name: '', email: '', message: '', budget: '$2,000 — $5,000' });
   const [formSubmitted, setFormSubmitted] = useState(false);
 
+  const isSectionVisible = isOpen !== undefined ? isOpen : internalOpen;
+
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         '.contact-reveal',
-        { opacity: 0, y: 40 },
+        { opacity: 0, y: 30 },
         {
           opacity: 1,
           y: 0,
-          duration: 1.2,
-          stagger: 0.15,
+          duration: 1,
+          stagger: 0.1,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: 'top 80%',
+            start: 'top 85%',
           }
         }
       );
@@ -66,6 +70,28 @@ export default function ContactSection() {
     setFormSubmitted(true);
   };
 
+  const handleToggleClick = () => {
+    playShutterSound();
+    if (onToggleContact) {
+      onToggleContact();
+    } else {
+      setInternalOpen(prev => !prev);
+    }
+
+    if (!isSectionVisible) {
+      setTimeout(() => {
+        const formSide = document.getElementById('contact-dropdown') || formContainerRef.current;
+        if (formSide) {
+          formSide.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          const firstInput = formSide.querySelector('input');
+          if (firstInput) {
+            setTimeout(() => firstInput.focus(), 600);
+          }
+        }
+      }, 150);
+    }
+  };
+
   const services = [
     "Bride to Be",
     "Groom to Be",
@@ -82,14 +108,14 @@ export default function ContactSection() {
     <section
       id="contact"
       ref={sectionRef}
-      className="relative py-16 sm:py-24 md:py-36 px-4 sm:px-6 md:px-12 bg-black border-t border-white/[0.08]"
+      className="relative py-8 sm:py-10 md:py-12 px-4 sm:px-6 md:px-10 bg-black border-t border-white/[0.08]"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         
-        {/* Main CTA Headline */}
-        <div className="contact-reveal flex flex-col mb-16 border-b border-white/[0.08] pb-12">
-          <div className="flex items-center space-x-2 font-mono text-xs text-caribbean tracking-[0.3em] uppercase mb-4">
-            <Sparkles className="w-3.5 h-3.5" />
+        {/* Main CTA Compact Headline */}
+        <div className="contact-reveal flex flex-col mb-4 border-b border-white/[0.08] pb-4">
+          <div className="flex items-center space-x-2 font-mono text-[10px] text-caribbean tracking-[0.25em] uppercase mb-2">
+            <Sparkles className="w-3 h-3" />
             <span>START A PROJECT // COMMISSION</span>
           </div>
           
@@ -100,299 +126,320 @@ export default function ContactSection() {
             </span>
           </h2>
 
-          <p className="mt-6 max-w-2xl text-beige font-light text-base md:text-lg">
+          <p className="mt-2.5 max-w-xl text-zinc-400 font-light text-xs sm:text-sm leading-relaxed">
             Have a wedding ceremony (Nikkah, Engagement, Bride or Groom to Be), birthday gala, automotive film, travel shoot, food commercial, or keynote presentation in need of cinematic storytelling? Let's connect.
           </p>
 
-          {/* Dual CTA strip — CV + WhatsApp */}
-          <div className="mt-8 flex flex-wrap gap-3">
+          {/* Action Strip: Enquiry Button + View Resume + Download CV */}
+          <div className="mt-5 flex items-center flex-wrap gap-2.5">
+            {/* Primary Enquiry Dropdown Trigger Button */}
+            <button
+              type="button"
+              onClick={handleToggleClick}
+              onMouseEnter={playHoverSound}
+              aria-expanded={isSectionVisible}
+              aria-controls="contact-dropdown"
+              className={`inline-flex items-center space-x-2.5 px-4 sm:px-5 py-2.5 font-mono font-bold text-xs tracking-wider uppercase rounded-sm transition-all duration-300 shadow-md group ${
+                isSectionVisible
+                  ? 'bg-white text-black border border-white hover:bg-caribbean hover:text-black'
+                  : 'bg-caribbean text-black hover:bg-white shadow-caribbean/20'
+              }`}
+              data-cursor="ENQUIRE"
+            >
+              <Mail className="w-3.5 h-3.5" />
+              <span>{isSectionVisible ? 'HIDE ENQUIRY SECTION' : 'ENQUIRE NOW'}</span>
+              <ChevronDown
+                className={`w-3.5 h-3.5 transition-transform duration-300 ${
+                  isSectionVisible ? 'rotate-180' : 'group-hover:translate-y-0.5'
+                }`}
+              />
+            </button>
+
+            {/* View Resume Button */}
+            {onOpenResume && (
+              <button
+                type="button"
+                onClick={() => {
+                  playShutterSound();
+                  onOpenResume();
+                }}
+                onMouseEnter={playHoverSound}
+                title="View Resume / CV"
+                aria-label="View Resume"
+                className="inline-flex items-center space-x-1.5 px-3.5 py-2.5 bg-white/5 border border-white/20 hover:border-caribbean text-zinc-200 hover:text-white rounded-sm font-mono text-xs tracking-wider transition-all duration-300 group"
+                data-cursor="RESUME"
+              >
+                <Eye className="w-3.5 h-3.5 text-caribbean group-hover:scale-110 transition-transform" />
+                <span>VIEW RESUME</span>
+              </button>
+            )}
+
+            {/* Download CV Icon Button */}
             <a
               href="/Muhammed_Rayees_CV.pdf"
               download="Muhammed_Rayees_CV.pdf"
+              onClick={playShutterSound}
               onMouseEnter={playHoverSound}
-              className="inline-flex items-center space-x-2 px-6 py-3 bg-caribbean text-black font-mono font-bold text-xs tracking-[0.2em] uppercase rounded-sm hover:bg-white transition-all duration-300 shadow-lg shadow-caribbean/20"
+              title="Download CV (PDF)"
+              aria-label="Download CV"
+              className="inline-flex items-center justify-center w-10 h-10 bg-transparent border border-white/20 hover:border-caribbean text-white hover:text-caribbean hover:bg-white/5 rounded-sm transition-all duration-300 shadow-sm group"
               data-cursor="DOWNLOAD"
             >
-              <Download className="w-3.5 h-3.5" />
-              <span>DOWNLOAD CV</span>
-            </a>
-
-            <a
-              href={`https://wa.me/${PERSONAL_INFO.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hi Rayees! I came across your portfolio and would like to discuss a project.')}`}
-              target="_blank"
-              rel="noreferrer noopener"
-              onMouseEnter={playHoverSound}
-              className="inline-flex items-center space-x-2 px-6 py-3 bg-transparent border border-white/20 text-white font-mono font-bold text-xs tracking-[0.2em] uppercase rounded-sm hover:border-caribbean hover:text-caribbean transition-all duration-300"
-              data-cursor="WHATSAPP"
-            >
-              <MessageSquare className="w-3.5 h-3.5" />
-              <span>ENQUIRE ON WHATSAPP</span>
+              <Download className="w-3.5 h-3.5 transform group-hover:scale-110 transition-transform" />
             </a>
           </div>
         </div>
 
-        {/* Contact Form & Channel Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-          
-          {/* Left Column: Direct Inquiries & Channels */}
-          <div className="contact-reveal lg:col-span-5 flex flex-col justify-between space-y-8">
-            
-            {/* Direct Email Card with One-Click Copy */}
-            <div className="p-6 sm:p-8 bg-[#070707] border border-white/[0.08] rounded-sm space-y-4 shadow-xl">
-              <span className="font-mono text-xs text-beige tracking-widest uppercase block font-medium">
-                DIRECT INBOX
-              </span>
-              
-              <div className="font-display font-bold text-xl sm:text-2xl text-white tracking-tight break-all">
-                {PERSONAL_INFO.email}
-              </div>
-
-              <div className="flex items-center space-x-3 pt-2">
-                <button
-                  onClick={handleCopyEmail}
-                  className="px-4 py-2 bg-black/60 hover:bg-caribbean hover:text-black border border-white/10 rounded-sm font-mono text-xs tracking-wider transition-colors flex items-center space-x-2 text-zinc-200"
-                  data-cursor="COPY"
-                >
-                  {copied ? (
-                    <>
-                      <Check className="w-3.5 h-3.5 text-caribbean" />
-                      <span className="text-caribbean font-semibold">COPIED TO CLIPBOARD</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3.5 h-3.5" />
-                      <span>COPY EMAIL</span>
-                    </>
-                  )}
-                </button>
-
-                <a
-                  href={`mailto:${PERSONAL_INFO.email}`}
-                  className="px-4 py-2 bg-caribbean text-black font-mono text-xs font-semibold tracking-wider rounded-sm hover:bg-white transition-colors flex items-center space-x-1.5 shadow-lg shadow-caribbean/20"
-                >
-                  <span>COMPOSE</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
-              </div>
-            </div>
-
-            {/* Social Network Links */}
-            <div className="space-y-4">
-              <span className="font-mono text-xs text-beige tracking-widest uppercase block font-medium">
-                CREATIVE NETWORKS & COMMISSIONS
-              </span>
-
-              <div className="grid grid-cols-2 gap-3 font-mono text-xs">
-                <a
-                  href={PERSONAL_INFO.instagram}
-                  target="_blank"
-                  rel="noreferrer"
-                  onMouseEnter={playHoverSound}
-                  className="p-3 bg-[#070707] border border-white/10 hover:border-caribbean text-zinc-300 hover:text-white rounded-sm flex items-center justify-between transition-colors group"
-                >
-                  <span className="flex items-center space-x-2">
-                    <InstagramIcon className="w-4 h-4 text-caribbean" />
-                    <span>INSTAGRAM</span>
-                  </span>
-                  <ArrowUpRight className="w-3 h-3 text-zinc-500 group-hover:text-caribbean transition-colors" />
-                </a>
-
-                <a
-                  href={PERSONAL_INFO.behance}
-                  target="_blank"
-                  rel="noreferrer"
-                  onMouseEnter={playHoverSound}
-                  className="p-3 bg-[#070707] border border-white/10 hover:border-caribbean text-zinc-300 hover:text-white rounded-sm flex items-center justify-between transition-colors group"
-                >
-                  <span className="flex items-center space-x-2">
-                    <Sparkles className="w-4 h-4 text-caribbean" />
-                    <span>BEHANCE</span>
-                  </span>
-                  <ArrowUpRight className="w-3 h-3 text-zinc-500 group-hover:text-caribbean transition-colors" />
-                </a>
-
-                <a
-                  href={PERSONAL_INFO.linkedin}
-                  target="_blank"
-                  rel="noreferrer"
-                  onMouseEnter={playHoverSound}
-                  className="p-3 bg-[#070707] border border-white/10 hover:border-caribbean text-zinc-300 hover:text-white rounded-sm flex items-center justify-between transition-colors group"
-                >
-                  <span className="flex items-center space-x-2">
-                    <LinkedinIcon className="w-4 h-4 text-caribbean" />
-                    <span>LINKEDIN</span>
-                  </span>
-                  <ArrowUpRight className="w-3 h-3 text-zinc-500 group-hover:text-caribbean transition-colors" />
-                </a>
-
-                <a
-                  href={`https://wa.me/${PERSONAL_INFO.whatsapp.replace(/[^0-9]/g, '')}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  onMouseEnter={playHoverSound}
-                  className="p-3 bg-[#070707] border border-white/10 hover:border-caribbean text-zinc-300 hover:text-white rounded-sm flex items-center justify-between transition-colors group"
-                >
-                  <span className="flex items-center space-x-2">
-                    <MessageSquare className="w-4 h-4 text-caribbean" />
-                    <span>WHATSAPP</span>
-                  </span>
-                  <ArrowUpRight className="w-3 h-3 text-zinc-500 group-hover:text-caribbean transition-colors" />
-                </a>
-              </div>
-            </div>
-
-            {/* Location & Availability Note */}
-            <div className="flex items-start space-x-3 p-4 bg-[#070707] border border-white/10 rounded-sm font-mono text-xs text-zinc-300">
-              <MapPin className="w-4 h-4 text-caribbean flex-shrink-0 mt-0.5" />
-              <div>
-                <span className="text-white block font-medium">LOCATION & ON-SITE COMMISSIONS</span>
-                <span className="text-beige text-[11px] block mt-0.5">{PERSONAL_INFO.location}</span>
-              </div>
-            </div>
-
-            {/* WhatsApp Direct Enquiry Card */}
-            <a
-              href={`https://wa.me/${PERSONAL_INFO.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hi Rayees! I came across your portfolio and would like to discuss a project.')}`}
-              target="_blank"
-              rel="noreferrer noopener"
-              onMouseEnter={playHoverSound}
-              className="group flex items-center justify-between p-5 bg-[#0a1200] border border-caribbean/30 hover:border-caribbean rounded-sm transition-all duration-300 shadow-[0_0_20px_rgba(172,238,1,0.05)] hover:shadow-[0_0_28px_rgba(172,238,1,0.15)]"
-              data-cursor="WHATSAPP"
+        {/* Contact Form & Channel Grid — Dropdown Drawer */}
+        <div
+          id="contact-dropdown"
+          className={`grid transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isSectionVisible
+              ? 'grid-rows-[1fr] opacity-100 mt-6'
+              : 'grid-rows-[0fr] opacity-0 pointer-events-none mt-0'
+          }`}
+          aria-hidden={!isSectionVisible}
+        >
+          <div className="overflow-hidden">
+            <div 
+              id="contact-side" 
+              ref={formContainerRef}
+              className={`grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 pt-2 pb-2 transition-all duration-500 ease-out ${
+                isSectionVisible ? 'translate-y-0 opacity-100' : '-translate-y-6 opacity-0'
+              }`}
             >
-              <div className="flex items-center space-x-3">
-                <div className="w-9 h-9 rounded-sm bg-caribbean/10 border border-caribbean/30 group-hover:border-caribbean flex items-center justify-center transition-colors">
-                  <MessageSquare className="w-4 h-4 text-caribbean" />
-                </div>
-                <div>
-                  <span className="font-mono text-[10px] text-caribbean tracking-widest uppercase block font-semibold">DIRECT ENQUIRY</span>
-                  <span className="font-mono text-xs text-white font-medium">Chat on WhatsApp</span>
-                  <span className="font-mono text-[10px] text-zinc-500 block">{PERSONAL_INFO.phone}</span>
-                </div>
-              </div>
-              <ArrowUpRight className="w-4 h-4 text-caribbean/50 group-hover:text-caribbean transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-            </a>
+              {/* Left Column: Direct Inquiries & Channels */}
+              <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
+                
+                {/* Direct Email Card with One-Click Copy */}
+                <div className="p-4 sm:p-5 bg-black border border-white/[0.08] rounded-sm space-y-3 shadow-md">
+                  <span className="font-mono text-[10px] text-beige tracking-widest uppercase block font-medium">
+                    DIRECT INBOX
+                  </span>
+                  
+                  <div className="font-display font-bold text-base sm:text-lg text-white tracking-tight break-all">
+                    {PERSONAL_INFO.email}
+                  </div>
 
-            {/* CV Download Card */}
-            <a
-              href="/Muhammed_Rayees_CV.pdf"
-              download="Muhammed_Rayees_CV.pdf"
-              onMouseEnter={playHoverSound}
-              className="group flex items-center justify-between p-5 bg-[#070707] border border-white/10 hover:border-caribbean/50 rounded-sm transition-all duration-300"
-              data-cursor="DOWNLOAD"
-            >
-              <div className="flex items-center space-x-3">
-                <div className="w-9 h-9 rounded-sm bg-white/5 border border-white/10 group-hover:border-caribbean/50 flex items-center justify-center transition-colors">
-                  <Download className="w-4 h-4 text-zinc-300 group-hover:text-caribbean transition-colors" />
-                </div>
-                <div>
-                  <span className="font-mono text-[10px] text-beige tracking-widest uppercase block font-semibold">RESUME / CV</span>
-                  <span className="font-mono text-xs text-white font-medium">Muhammed Rayees V</span>
-                  <span className="font-mono text-[10px] text-zinc-500 block">PDF · Download</span>
-                </div>
-              </div>
-              <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-caribbean transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-            </a>
-          </div>
+                  <div className="flex items-center space-x-2 pt-1">
+                    <button
+                      onClick={handleCopyEmail}
+                      className="px-3 py-1.5 bg-black/60 hover:bg-caribbean hover:text-black border border-white/10 rounded-sm font-mono text-[11px] tracking-wider transition-colors flex items-center space-x-1.5 text-zinc-200"
+                      data-cursor="COPY"
+                    >
+                      {copied ? (
+                        <>
+                          <Check className="w-3 h-3 text-caribbean" />
+                          <span className="text-caribbean font-semibold">COPIED</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3 h-3" />
+                          <span>COPY EMAIL</span>
+                        </>
+                      )}
+                    </button>
 
-          {/* Right Column: Interactive Project Inquiry Form */}
-          <div className="contact-reveal lg:col-span-7 bg-[#070707] border border-white/[0.08] p-8 sm:p-10 rounded-sm shadow-2xl">
-            {formSubmitted ? (
-              <div className="py-16 text-center space-y-4">
-                <div className="w-16 h-16 rounded-full bg-caribbean/10 border border-caribbean text-caribbean mx-auto flex items-center justify-center shadow-[0_0_20px_rgba(0,223,137,0.2)]">
-                  <Check className="w-8 h-8" />
-                </div>
-                <h3 className="font-display font-bold text-2xl text-white tracking-tight uppercase">
-                  MESSAGE TRANSMITTED
-                </h3>
-                <p className="text-beige text-sm font-light max-w-md mx-auto">
-                  Thank you for reaching out. I review all project proposals and respond within 24–48 hours with availability and custom scoping.
-                </p>
-                <button
-                  onClick={() => setFormSubmitted(false)}
-                  className="mt-4 px-6 py-2 border border-white/20 font-mono text-xs text-white hover:border-caribbean hover:text-caribbean transition-colors"
-                >
-                  SEND ANOTHER INQUIRY
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label className="font-mono text-xs text-beige tracking-widest uppercase block mb-3 font-medium">
-                    CHOOSE YOUR INQUIRY SERVICE
-                  </label>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                    {services.map((srv) => (
-                      <button
-                        type="button"
-                        key={srv}
-                        onClick={() => setSelectedService(srv)}
-                        className={`p-2.5 text-center font-mono text-xs rounded-sm border transition-all ${
-                          selectedService === srv
-                            ? 'bg-caribbean text-black font-bold border-caribbean shadow-md shadow-caribbean/20'
-                            : 'bg-black text-zinc-300 border-white/10 hover:border-caribbean/60'
-                        }`}
-                      >
-                        {srv}
-                      </button>
-                    ))}
+                    <a
+                      href={`mailto:${PERSONAL_INFO.email}`}
+                      className="px-3 py-1.5 bg-caribbean text-black font-mono text-[11px] font-semibold tracking-wider rounded-sm hover:bg-white transition-colors flex items-center space-x-1 shadow-md shadow-caribbean/20"
+                    >
+                      <span>COMPOSE</span>
+                      <ArrowUpRight className="w-3 h-3" />
+                    </a>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {/* Social Network Links (Instagram & LinkedIn Only) */}
+                <div className="space-y-2.5">
+                  <span className="font-mono text-[10px] text-beige tracking-widest uppercase block font-medium">
+                    CREATIVE NETWORKS & COMMISSIONS
+                  </span>
+
+                  <div className="grid grid-cols-2 gap-2.5 font-mono text-xs">
+                    <a
+                      href={PERSONAL_INFO.instagram}
+                      target="_blank"
+                      rel="noreferrer"
+                      onMouseEnter={playHoverSound}
+                      className="p-2.5 bg-black border border-white/10 hover:border-caribbean text-zinc-300 hover:text-white rounded-sm flex items-center justify-between transition-colors group"
+                    >
+                      <span className="flex items-center space-x-2">
+                        <InstagramIcon className="w-3.5 h-3.5 text-caribbean" />
+                        <span className="text-[11px]">INSTAGRAM</span>
+                      </span>
+                      <ArrowUpRight className="w-3 h-3 text-zinc-500 group-hover:text-caribbean transition-colors" />
+                    </a>
+
+                    <a
+                      href={PERSONAL_INFO.linkedin}
+                      target="_blank"
+                      rel="noreferrer"
+                      onMouseEnter={playHoverSound}
+                      className="p-2.5 bg-black border border-white/10 hover:border-caribbean text-zinc-300 hover:text-white rounded-sm flex items-center justify-between transition-colors group"
+                    >
+                      <span className="flex items-center space-x-2">
+                        <LinkedinIcon className="w-3.5 h-3.5 text-caribbean" />
+                        <span className="text-[11px]">LINKEDIN</span>
+                      </span>
+                      <ArrowUpRight className="w-3 h-3 text-zinc-500 group-hover:text-caribbean transition-colors" />
+                    </a>
+                  </div>
+                </div>
+
+                {/* Location & Availability Note */}
+                <div className="flex items-start space-x-2.5 p-3 bg-black border border-white/10 rounded-sm font-mono text-[11px] text-zinc-300">
+                  <MapPin className="w-3.5 h-3.5 text-caribbean flex-shrink-0 mt-0.5" />
                   <div>
-                    <label className="font-mono text-xs text-beige tracking-widest uppercase block mb-2 font-medium">
-                      YOUR NAME / CLIENT
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Tariq / Ayesha"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full bg-black border border-white/15 focus:border-caribbean rounded-sm px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none transition-colors"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="font-mono text-xs text-beige tracking-widest uppercase block mb-2 font-medium">
-                      EMAIL ADDRESS
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      placeholder="contact@domain.com"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full bg-black border border-white/15 focus:border-caribbean rounded-sm px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none transition-colors"
-                    />
+                    <span className="text-white block font-medium">LOCATION & ON-SITE COMMISSIONS</span>
+                    <span className="text-beige text-[10px] block mt-0.5">{PERSONAL_INFO.location}</span>
                   </div>
                 </div>
 
-                <div>
-                  <label className="font-mono text-xs text-beige tracking-widest uppercase block mb-2 font-medium">
-                    EVENT DETAILS, DATES & REQUIREMENTS
-                  </label>
-                  <textarea
-                    rows={4}
-                    required
-                    placeholder="Tell me about your event date, location, desired coverage (Nikkah, Bride/Groom to Be, Automotive shoot, Travel, Food promo, etc.)..."
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full bg-black border border-white/15 focus:border-caribbean rounded-sm px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none transition-colors resize-none"
-                  />
-                </div>
+                {/* CV Download & View Card */}
+                <div className="p-3.5 sm:p-4 bg-black border border-white/10 hover:border-caribbean/50 rounded-sm transition-all duration-300 flex items-center justify-between group">
+                  <div 
+                    className="flex items-center space-x-2.5 cursor-pointer flex-1"
+                    onClick={() => {
+                      playShutterSound();
+                      if (onOpenResume) onOpenResume();
+                    }}
+                  >
+                    <div className="w-8 h-8 rounded-sm bg-white/5 border border-white/10 group-hover:border-caribbean/50 flex items-center justify-center transition-colors">
+                      <Eye className="w-3.5 h-3.5 text-zinc-300 group-hover:text-caribbean transition-colors" />
+                    </div>
+                    <div>
+                      <span className="font-mono text-[9px] text-caribbean tracking-widest uppercase block font-semibold">CURRICULUM VITAE</span>
+                      <span className="font-mono text-xs text-white font-medium">Muhammed Rayees V</span>
+                    </div>
+                  </div>
 
-                <button
-                  type="submit"
-                  onMouseEnter={playHoverSound}
-                  className="w-full py-4 bg-caribbean hover:bg-white text-black font-mono font-bold text-xs tracking-[0.25em] uppercase transition-all duration-300 flex items-center justify-center space-x-2 shadow-2xl shadow-caribbean/20"
-                  data-cursor="TRANSMIT"
-                >
-                  <Send className="w-3.5 h-3.5" />
-                  <span>SUBMIT INQUIRY</span>
-                </button>
-              </form>
-            )}
+                  <div className="flex items-center space-x-1.5">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        playShutterSound();
+                        if (onOpenResume) onOpenResume();
+                      }}
+                      className="px-2 py-1 bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white rounded-xs font-mono text-[10px] tracking-wider transition-colors border border-white/10"
+                    >
+                      VIEW
+                    </button>
+                    <a
+                      href="/Muhammed_Rayees_CV.pdf"
+                      download="Muhammed_Rayees_CV.pdf"
+                      onClick={playShutterSound}
+                      onMouseEnter={playHoverSound}
+                      title="Download PDF"
+                      className="p-1.5 bg-caribbean/10 hover:bg-caribbean text-caribbean hover:text-black rounded-xs transition-colors border border-caribbean/30"
+                    >
+                      <Download className="w-3 h-3" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Interactive Project Inquiry Form */}
+              <div id="contact-form-side" className="lg:col-span-7 bg-black border border-white/[0.08] p-5 sm:p-7 rounded-sm shadow-xl transition-all duration-300">
+                {formSubmitted ? (
+                  <div className="py-12 text-center space-y-3">
+                    <div className="w-12 h-12 rounded-full bg-caribbean/10 border border-caribbean text-caribbean mx-auto flex items-center justify-center shadow-[0_0_20px_rgba(0,223,137,0.2)]">
+                      <Check className="w-6 h-6" />
+                    </div>
+                    <h3 className="font-display font-bold text-xl text-white tracking-tight uppercase">
+                      MESSAGE TRANSMITTED
+                    </h3>
+                    <p className="text-beige text-xs font-light max-w-sm mx-auto">
+                      Thank you for reaching out. I review all project proposals and respond within 24–48 hours with availability and scoping.
+                    </p>
+                    <button
+                      onClick={() => setFormSubmitted(false)}
+                      className="mt-3 px-4 py-1.5 border border-white/20 font-mono text-xs text-white hover:border-caribbean hover:text-caribbean transition-colors rounded-xs"
+                    >
+                      SEND ANOTHER INQUIRY
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                      <label className="font-mono text-[10px] text-beige tracking-widest uppercase block mb-2 font-medium">
+                        CHOOSE YOUR INQUIRY SERVICE
+                      </label>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+                        {services.map((srv) => (
+                          <button
+                            type="button"
+                            key={srv}
+                            onClick={() => setSelectedService(srv)}
+                            className={`p-2 text-center font-mono text-[11px] rounded-sm border transition-all ${
+                              selectedService === srv
+                                ? 'bg-caribbean text-black font-bold border-caribbean shadow-sm shadow-caribbean/20'
+                                : 'bg-black text-zinc-300 border-white/10 hover:border-caribbean/60'
+                            }`}
+                          >
+                            {srv}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="font-mono text-[10px] text-beige tracking-widest uppercase block mb-1.5 font-medium">
+                          YOUR NAME / CLIENT
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="e.g. Tariq / Ayesha"
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          className="w-full bg-black border border-white/15 focus:border-caribbean rounded-sm px-3.5 py-2.5 text-xs text-white placeholder-zinc-600 focus:outline-none transition-colors"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="font-mono text-[10px] text-beige tracking-widest uppercase block mb-1.5 font-medium">
+                          EMAIL ADDRESS
+                        </label>
+                        <input
+                          type="email"
+                          required
+                          placeholder="contact@domain.com"
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          className="w-full bg-black border border-white/15 focus:border-caribbean rounded-sm px-3.5 py-2.5 text-xs text-white placeholder-zinc-600 focus:outline-none transition-colors"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="font-mono text-[10px] text-beige tracking-widest uppercase block mb-1.5 font-medium">
+                        EVENT DETAILS, DATES & REQUIREMENTS
+                      </label>
+                      <textarea
+                        rows={3}
+                        required
+                        placeholder="Tell me about your event date, location, desired coverage (Nikkah, Bride/Groom to Be, Automotive shoot, Travel, Food promo, etc.)..."
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        className="w-full bg-black border border-white/15 focus:border-caribbean rounded-sm px-3.5 py-2.5 text-xs text-white placeholder-zinc-600 focus:outline-none transition-colors resize-none"
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      onMouseEnter={playHoverSound}
+                      className="w-full py-3 bg-caribbean hover:bg-white text-black font-mono font-bold text-xs tracking-[0.2em] uppercase transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg shadow-caribbean/20 rounded-sm"
+                      data-cursor="TRANSMIT"
+                    >
+                      <Send className="w-3.5 h-3.5" />
+                      <span>SUBMIT INQUIRY</span>
+                    </button>
+                  </form>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>

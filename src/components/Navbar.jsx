@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Volume2, VolumeX, Menu, X, ArrowUpRight, Film, Circle } from 'lucide-react';
 import { toggleMute, playHoverSound, playShutterSound } from '../utils/audio';
 
-export default function Navbar({ onSelectWork }) {
+export default function Navbar({ onSelectWork, onOpenContact, onOpenResume }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [muted, setMuted] = useState(true);
@@ -80,6 +80,13 @@ export default function Navbar({ onSelectWork }) {
               <a
                 key={link.label}
                 href={link.href}
+                onClick={(e) => {
+                  if (link.label === 'CONTACT' && onOpenContact) {
+                    e.preventDefault();
+                    onOpenContact();
+                  }
+                  playHoverSound();
+                }}
                 onMouseEnter={playHoverSound}
                 className="relative text-xs font-mono font-medium tracking-[0.2em] text-zinc-300 hover:text-white transition-colors duration-300 py-1 group"
                 data-cursor="NAV"
@@ -88,6 +95,22 @@ export default function Navbar({ onSelectWork }) {
                 <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-caribbean transition-all duration-300 group-hover:w-full shadow-[0_0_6px_#acee01]" />
               </a>
             ))}
+
+            {onOpenResume && (
+              <button
+                type="button"
+                onClick={() => {
+                  playShutterSound();
+                  onOpenResume();
+                }}
+                onMouseEnter={playHoverSound}
+                className="relative text-xs font-mono font-medium tracking-[0.2em] text-caribbean hover:text-white transition-colors duration-300 py-1 group"
+                data-cursor="RESUME"
+              >
+                RESUME
+                <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-white transition-all duration-300 group-hover:w-full" />
+              </button>
+            )}
           </nav>
 
           {/* Right Actions: Time, Availability, Audio Toggle, CTA */}
@@ -115,16 +138,20 @@ export default function Navbar({ onSelectWork }) {
             </button>
 
             {/* Contact CTA */}
-            <a
-              href="#contact"
-              onClick={playShutterSound}
+            <button
+              type="button"
+              onClick={() => {
+                playShutterSound();
+                if (onOpenContact) onOpenContact();
+                else document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+              }}
               onMouseEnter={playHoverSound}
               className="hidden sm:inline-flex items-center space-x-2 px-4 py-2 rounded-sm border border-caribbean/60 text-caribbean font-mono text-xs tracking-widest hover:bg-caribbean hover:text-black transition-all duration-300 group shadow-md shadow-caribbean/10"
               data-cursor="CONTACT"
             >
               <span>INQUIRE</span>
               <ArrowUpRight className="w-3.5 h-3.5 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </a>
+            </button>
 
             {/* Mobile Menu Toggle */}
             <button
@@ -149,9 +176,13 @@ export default function Navbar({ onSelectWork }) {
               <a
                 key={link.label}
                 href={link.href}
-                onClick={() => {
+                onClick={(e) => {
                   setMobileMenuOpen(false);
                   playShutterSound();
+                  if (link.label === 'CONTACT' && onOpenContact) {
+                    e.preventDefault();
+                    onOpenContact();
+                  }
                 }}
                 className="font-display text-2xl font-bold text-zinc-200 hover:text-caribbean transition-colors tracking-wider flex items-center justify-between border-b border-white/5 pb-3"
               >
@@ -160,14 +191,33 @@ export default function Navbar({ onSelectWork }) {
               </a>
             ))}
 
+            {onOpenResume && (
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  playShutterSound();
+                  onOpenResume();
+                }}
+                className="font-display text-2xl font-bold text-caribbean hover:text-white transition-colors tracking-wider flex items-center justify-between border-b border-white/5 pb-3 text-left"
+              >
+                <span>CURRICULUM VITAE (CV)</span>
+                <span className="font-mono text-xs text-caribbean">VIEW</span>
+              </button>
+            )}
+
             <div className="pt-8 flex flex-col space-y-4">
-              <a
-                href="#contact"
-                onClick={() => setMobileMenuOpen(false)}
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  playShutterSound();
+                  if (onOpenContact) onOpenContact();
+                }}
                 className="w-full text-center py-3 bg-caribbean text-black font-mono text-xs tracking-widest uppercase font-bold shadow-lg shadow-caribbean/20"
               >
                 BOOK A COMMISSION
-              </a>
+              </button>
               <div className="text-center font-mono text-[10px] text-beige tracking-widest uppercase">
                 {timeStr}
               </div>

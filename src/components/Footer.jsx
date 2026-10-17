@@ -10,7 +10,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-black border-t border-white/[0.08] py-12 px-6 md:px-12 text-zinc-400 font-mono text-xs">
+    <footer className="relative bg-black border-t border-white/[0.08] py-6 sm:py-8 px-4 sm:px-6 md:px-12 text-zinc-400 font-mono text-xs">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
         
         {/* Left: Brand Monogram & Role */}

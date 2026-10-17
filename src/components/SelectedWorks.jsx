@@ -67,14 +67,14 @@ export default function SelectedWorks({ onSelectProject }) {
     <section
       id="work"
       ref={sectionRef}
-      className="relative py-16 sm:py-24 md:py-36 px-4 sm:px-6 md:px-12 bg-black border-t border-white/[0.08]"
+      className="relative py-10 sm:py-14 md:py-16 px-4 sm:px-6 md:px-12 bg-black border-t border-white/[0.08]"
     >
       <div className="max-w-7xl mx-auto">
         
         {/* Section Header & Category Filter Tabs */}
-        <div ref={headerRef} className="flex flex-col md:flex-row md:items-end justify-between mb-16 border-b border-white/[0.08] pb-8">
+        <div ref={headerRef} className="flex flex-col md:flex-row md:items-end justify-between mb-8 border-b border-white/[0.08] pb-5">
           <div>
-            <div className="flex items-center space-x-2 font-mono text-xs text-caribbean tracking-[0.3em] uppercase mb-3">
+            <div className="flex items-center space-x-2 font-mono text-xs text-caribbean tracking-[0.3em] uppercase mb-2">
               <Clapperboard className="w-3.5 h-3.5" />
               <span>
                 {activeCategory === "ALL" 
@@ -87,9 +87,8 @@ export default function SelectedWorks({ onSelectProject }) {
             </h2>
           </div>
 
-          {/* Category Filter Buttons:
-              ALL WORKS | VIDEO EDITING | VIDEOGRAPHY | GRAPHIC DESIGN */}
-          <div className="flex flex-wrap gap-2 mt-6 md:mt-0">
+          {/* Category Filter Buttons */}
+          <div className="flex flex-wrap gap-2 mt-4 md:mt-0">
             {CATEGORIES.map((cat) => {
               const isActive = activeCategory === cat.id;
               return (
@@ -100,10 +99,10 @@ export default function SelectedWorks({ onSelectProject }) {
                     setActiveCategory(cat.id);
                   }}
                   onMouseEnter={playHoverSound}
-                  className={`px-4 py-2.5 text-xs font-mono tracking-widest uppercase transition-all duration-300 rounded-sm border ${
+                  className={`px-3.5 py-2 text-xs font-mono tracking-widest uppercase transition-all duration-300 rounded-sm border ${
                     isActive
                       ? 'bg-caribbean text-black border-caribbean font-bold shadow-lg shadow-caribbean/25'
-                      : 'bg-white/[0.03] text-zinc-400 border-white/10 hover:border-caribbean/60 hover:text-white'
+                      : 'bg-black text-zinc-400 border-white/10 hover:border-caribbean/60 hover:text-white'
                   }`}
                   data-cursor="FILTER"
                 >
@@ -115,7 +114,7 @@ export default function SelectedWorks({ onSelectProject }) {
         </div>
 
         {/* Selected Works Grid */}
-        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {filteredProjects.map((project) => (
             <div
               key={project.id}
@@ -124,7 +123,7 @@ export default function SelectedWorks({ onSelectProject }) {
                 onSelectProject(project);
               }}
               onMouseEnter={playHoverSound}
-              className="project-card group relative bg-[#070707] border border-white/[0.08] hover:border-caribbean/50 rounded-sm overflow-hidden transition-all duration-500 cursor-pointer flex flex-col justify-between shadow-2xl"
+              className="project-card group relative bg-black border border-white/[0.08] hover:border-caribbean/50 rounded-sm overflow-hidden transition-all duration-500 cursor-pointer flex flex-col justify-between shadow-2xl"
               data-cursor="VIEW"
             >
               {/* Media Container with 16:10 Cinema Aspect */}
@@ -137,7 +136,7 @@ export default function SelectedWorks({ onSelectProject }) {
                 />
 
                 {/* Letterbox subtle shadow */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#070707] via-transparent to-black/30 opacity-70 group-hover:opacity-40 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30 opacity-70 group-hover:opacity-40 transition-opacity duration-500" />
 
                 {/* Top Badges */}
                 <div className="absolute top-4 left-4 right-4 flex items-center justify-between font-mono text-[10px] tracking-widest uppercase z-10">
