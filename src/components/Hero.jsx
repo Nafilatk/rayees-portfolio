@@ -41,11 +41,12 @@ export default function Hero({ onOpenShowreel }) {
 
       // 3. Cinematic portrait emergence rising up from the bottom of the page
       if (portraitRef.current) {
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
         tl.fromTo(
           portraitRef.current,
           {
             opacity: 0,
-            y: 280,
+            y: isMobile ? 80 : 280,
             scale: 0.9,
             filter: 'blur(10px)',
           },
@@ -54,7 +55,7 @@ export default function Hero({ onOpenShowreel }) {
             y: 0,
             scale: 1,
             filter: 'blur(0px)',
-            duration: 1.8,
+            duration: isMobile ? 1.3 : 1.8,
             ease: 'power4.out',
           },
           0.1
@@ -139,7 +140,7 @@ export default function Hero({ onOpenShowreel }) {
     <section
       id="hero"
       ref={containerRef}
-      className="relative min-h-[85vh] sm:min-h-[92vh] w-full flex flex-col justify-end items-center overflow-hidden bg-black mt-16 sm:mt-20 md:mt-24 pt-16 sm:pt-20 pb-0 px-4 sm:px-6 md:px-12 select-none"
+      className="relative min-h-0 sm:min-h-[88vh] md:min-h-[92vh] w-full flex flex-col justify-start sm:justify-end items-center overflow-hidden bg-black mt-0 sm:mt-16 md:mt-20 pt-16 sm:pt-20 pb-8 sm:pb-0 px-4 sm:px-6 md:px-12 select-none"
     >
       {/* ============================================================
           LAYER 1: BACKGROUND (z-0)
@@ -158,9 +159,9 @@ export default function Hero({ onOpenShowreel }) {
       </div>
 
       {/* ============================================================
-          LAYER 3: FOREGROUND HERO PORTRAIT ANCHORED TO BOTTOM (z-20)
+          LAYER 3: FOREGROUND HERO PORTRAIT (z-20)
           ============================================================ */}
-      <div className="relative z-20 max-w-5xl mx-auto w-full flex flex-col items-center justify-end text-center mt-auto pointer-events-none">
+      <div className="relative z-20 max-w-5xl mx-auto w-full flex flex-col items-center justify-start sm:justify-end text-center mt-0 sm:mt-auto pointer-events-none">
         {/* Foreground Portrait Anchored to Baseline */}
         <div
           ref={portraitRef}
@@ -260,7 +261,7 @@ export default function Hero({ onOpenShowreel }) {
                 e.target.onerror = null;
                 e.target.src = '/images/hero_no_bg.png';
               }}
-              className="w-72 sm:w-88 md:w-[440px] lg:w-[500px] xl:w-[540px] h-auto max-h-[78vh] object-contain object-bottom block drop-shadow-[0_20px_40px_rgba(0,0,0,0.95)] drop-shadow-[0_0_20px_rgba(0,255,163,0.18)] will-change-transform transform transition-transform duration-700 group-hover:scale-105"
+              className="w-72 sm:w-88 md:w-[440px] lg:w-[500px] xl:w-[540px] h-auto max-h-[68vh] sm:max-h-[78vh] object-contain object-bottom block drop-shadow-[0_20px_40px_rgba(0,0,0,0.95)] drop-shadow-[0_0_20px_rgba(0,255,163,0.18)] will-change-transform transform transition-transform duration-700 group-hover:scale-105"
             />
           </div>
 
