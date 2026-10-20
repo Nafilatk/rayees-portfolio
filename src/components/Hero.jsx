@@ -4,9 +4,41 @@ import { ArrowDown, Play, Film, Focus } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { playHoverSound, playShutterSound } from '../utils/audio';
 
+const HERO_MARQUEE_ROWS = [
+  {
+    text: 'VIDEO EDITOR',
+    directionClass: 'animate-hero-marquee-1',
+    textStyle: 'text-white/40 font-extrabold tracking-[0.18em]',
+    starColor: 'text-caribbean',
+    repeatCount: 8,
+  },
+  {
+    text: 'VIDEOGRAPHER',
+    directionClass: 'animate-hero-marquee-2',
+    textStyle: 'text-zinc-400/35 font-bold tracking-[0.22em]',
+    starColor: 'text-caribbean',
+    repeatCount: 8,
+  },
+  {
+    text: 'VISUAL STORYTELLER',
+    directionClass: 'animate-hero-marquee-3',
+    textStyle: 'text-white/40 font-extrabold tracking-[0.18em]',
+    starColor: 'text-caribbean',
+    repeatCount: 8,
+  },
+  {
+    text: 'SHOTSBYRYS',
+    directionClass: 'animate-hero-marquee-4',
+    textStyle: 'text-caribbean/70 font-black tracking-[0.25em]',
+    starColor: 'text-white/40',
+    repeatCount: 8,
+  },
+];
+
 export default function Hero({ onOpenShowreel }) {
   const containerRef = useRef(null);
   const bgImageRef = useRef(null);
+  const marqueeRef = useRef(null);
   const metaOverlayRef = useRef(null);
   const portraitRef = useRef(null);
   const imageRef = useRef(null);
@@ -29,7 +61,17 @@ export default function Hero({ onOpenShowreel }) {
         0
       );
 
-      // 2. Camera metadata viewfinder HUD reveal (if present)
+      // 2. Horizontal Marquee reveal
+      if (marqueeRef.current) {
+        tl.fromTo(
+          marqueeRef.current,
+          { opacity: 0, scale: 0.96 },
+          { opacity: 0.9, scale: 1, duration: 1.5, ease: 'power2.out' },
+          0.15
+        );
+      }
+
+      // 3. Camera metadata viewfinder HUD reveal (if present)
       if (metaOverlayRef.current) {
         tl.fromTo(
           metaOverlayRef.current,
@@ -39,7 +81,7 @@ export default function Hero({ onOpenShowreel }) {
         );
       }
 
-      // 3. Cinematic portrait emergence rising up from the bottom of the page
+      // 4. Cinematic portrait emergence rising up from the bottom of the page
       if (portraitRef.current) {
         const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
         tl.fromTo(
@@ -159,6 +201,45 @@ export default function Hero({ onOpenShowreel }) {
       </div>
 
       {/* ============================================================
+          LAYER 2: 4-ROW HORIZONTAL AUTO-MOVING TEXT MARQUEE (z-10)
+          ============================================================ */}
+      <div
+        ref={marqueeRef}
+        className="absolute inset-x-0 top-[28%] sm:top-[34%] md:top-[38%] -translate-y-1/2 z-10 pointer-events-none flex flex-col justify-center space-y-1.5 sm:space-y-2 md:space-y-3 overflow-hidden [mask-image:linear-gradient(to_right,transparent_0%,black_10%,black_90%,transparent_100%)] select-none opacity-90"
+        aria-hidden="true"
+      >
+        {HERO_MARQUEE_ROWS.map((row, rowIdx) => (
+          <div key={rowIdx} className="flex overflow-hidden py-0.5">
+            <div className={`${row.directionClass} flex shrink-0 items-center`}>
+              {Array.from({ length: row.repeatCount }).map((_, i) => (
+                <span
+                  key={`copy1-${rowIdx}-${i}`}
+                  className={`inline-flex items-center text-lg sm:text-2xl md:text-4xl lg:text-5xl ${row.textStyle} whitespace-nowrap`}
+                >
+                  <span>{row.text}</span>
+                  <span className={`${row.starColor} mx-3 sm:mx-6 md:mx-8 text-xs sm:text-lg md:text-xl font-bold`}>
+                    ✳
+                  </span>
+                </span>
+              ))}
+              {Array.from({ length: row.repeatCount }).map((_, i) => (
+                <span
+                  key={`copy2-${rowIdx}-${i}`}
+                  className={`inline-flex items-center text-lg sm:text-2xl md:text-4xl lg:text-5xl ${row.textStyle} whitespace-nowrap`}
+                  aria-hidden="true"
+                >
+                  <span>{row.text}</span>
+                  <span className={`${row.starColor} mx-3 sm:mx-6 md:mx-8 text-xs sm:text-lg md:text-xl font-bold`}>
+                    ✳
+                  </span>
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* ============================================================
           LAYER 3: FOREGROUND HERO PORTRAIT (z-20)
           ============================================================ */}
       <div className="relative z-20 max-w-5xl mx-auto w-full flex flex-col items-center justify-start sm:justify-end text-center mt-0 sm:mt-auto pointer-events-none">
@@ -169,87 +250,6 @@ export default function Hero({ onOpenShowreel }) {
         >
           {/* Ambient Caribbean Green + Soft Warm Radial Backlight */}
           <div className="absolute inset-0 -inset-x-8 bg-gradient-to-t from-caribbean/20 via-caribbean/5 to-transparent rounded-full blur-3xl opacity-75 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none scale-110" />
-
-          {/* Animated Circular Silhouette Text Ring */}
-          <div
-            className="absolute top-[38%] sm:top-[40%] md:top-[42%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] sm:w-[420px] sm:h-[420px] md:w-[510px] md:h-[510px] lg:w-[590px] lg:h-[590px] xl:w-[640px] xl:h-[640px] pointer-events-none z-10 flex items-center justify-center"
-            aria-label="VIDEO EDITOR ✳ VIDEOGRAPHER ✳ VISUAL STORYTELLER ✳ FRAME BY FRAME"
-          >
-            <svg
-              viewBox="0 0 500 500"
-              className="w-full h-full animate-spin-slow select-none overflow-visible"
-              aria-hidden="true"
-            >
-              <defs>
-                <path
-                  id="heroCircleTextPath"
-                  d="M 250, 250 m -216, 0 a 216,216 0 1,1 432,0 a 216,216 0 1,1 -432,0"
-                />
-              </defs>
-
-              {/* Thin subtle concentric calibration rings */}
-              <circle
-                cx="250"
-                cy="250"
-                r="234"
-                fill="none"
-                stroke="rgba(255, 255, 255, 0.08)"
-                strokeWidth="0.75"
-                strokeDasharray="4 8"
-              />
-              <circle
-                cx="250"
-                cy="250"
-                r="216"
-                fill="none"
-                stroke="rgba(172, 238, 1, 0.12)"
-                strokeWidth="0.5"
-              />
-              <circle
-                cx="250"
-                cy="250"
-                r="198"
-                fill="none"
-                stroke="rgba(255, 255, 255, 0.05)"
-                strokeWidth="0.5"
-              />
-
-              {/* Precision Cardinal Marks (North, East, South, West) */}
-              <circle cx="250" cy="16" r="1.5" fill="#acee01" opacity="0.8" />
-              <circle cx="484" cy="250" r="1.5" fill="#acee01" opacity="0.8" />
-              <circle cx="250" cy="484" r="1.5" fill="#acee01" opacity="0.8" />
-              <circle cx="16" cy="250" r="1.5" fill="#acee01" opacity="0.8" />
-
-              {/* Continuous Circular Typography Loop */}
-              <text
-                className="font-mono text-[9px] sm:text-[9.5px] uppercase tracking-[0.22em] font-medium"
-              >
-                <textPath
-                  href="#heroCircleTextPath"
-                  startOffset="0%"
-                  textLength="1355"
-                  lengthAdjust="spacing"
-                >
-                  <tspan fill="#ffffff" fillOpacity="0.85">VIDEO EDITOR </tspan>
-                  <tspan fill="#acee01" fontWeight="bold">✳ </tspan>
-                  <tspan fill="#ffffff" fillOpacity="0.85">VIDEOGRAPHER </tspan>
-                  <tspan fill="#acee01" fontWeight="bold">✳ </tspan>
-                  <tspan fill="#ffffff" fillOpacity="0.95">VISUAL STORYTELLER </tspan>
-                  <tspan fill="#acee01" fontWeight="bold">✳ </tspan>
-                  <tspan fill="#acee01" fontWeight="bold">SHOTSBYRYS </tspan>
-                  <tspan fill="#acee01" fontWeight="bold">✳ </tspan>
-                  <tspan fill="#ffffff" fillOpacity="0.85">VIDEO EDITOR </tspan>
-                  <tspan fill="#acee01" fontWeight="bold">✳ </tspan>
-                  <tspan fill="#ffffff" fillOpacity="0.85">VIDEOGRAPHER </tspan>
-                  <tspan fill="#acee01" fontWeight="bold">✳ </tspan>
-                  <tspan fill="#ffffff" fillOpacity="0.95">VISUAL STORYTELLER </tspan>
-                  <tspan fill="#acee01" fontWeight="bold">✳ </tspan>
-                  <tspan fill="#acee01" fontWeight="bold">SHOTSBYRYS </tspan>
-                  <tspan fill="#acee01" fontWeight="bold">✳ </tspan>
-                </textPath>
-              </text>
-            </svg>
-          </div>
 
           {/* Transparent Cutout Image - Resting Flush on the Bottom Edge */}
           <div className="relative z-20 overflow-visible flex items-end justify-center">

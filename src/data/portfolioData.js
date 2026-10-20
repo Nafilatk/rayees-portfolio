@@ -6,7 +6,7 @@ export const PERSONAL_INFO = {
   location: "Available for Commissions & On-Location Shoots",
   email: "muhammedrayees759@gmail.com",
   phone: "+91 94463 88427",
-  whatsapp: "+919446388427",
+  whatsapp: "https://wa.me/919446388427",
   instagram: "https://instagram.com/shotsbyrys",
   behance: "https://behance.net",
   linkedin: "https://linkedin.com",
