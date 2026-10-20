@@ -37,7 +37,6 @@ export default function Navbar({ onSelectWork, onOpenContact, onOpenResume }) {
     { label: 'WORK', href: '#work' },
     { label: 'SHOWREEL', href: '#showreel' },
     { label: 'ABOUT', href: '#about' },
-    { label: 'SKILLS', href: '#skills' },
     { label: 'EXPERIENCE', href: '#experience' },
     { label: 'CONTACT', href: '#contact' },
   ];
@@ -128,14 +127,7 @@ export default function Navbar({ onSelectWork, onOpenContact, onOpenResume }) {
             </div>
 
             {/* Audio Atmosphere Toggle */}
-            <button
-              onClick={handleAudioToggle}
-              title={muted ? "Enable Cinematic Audio Atmosphere" : "Mute Audio Atmosphere"}
-              className="p-2 rounded-full border border-white/10 hover:border-caribbean text-zinc-300 hover:text-caribbean transition-all duration-300 bg-black/80"
-              data-cursor="AUDIO"
-            >
-              {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-caribbean animate-pulse" />}
-            </button>
+         
 
             {/* Contact CTA */}
             <button
@@ -184,10 +176,10 @@ export default function Navbar({ onSelectWork, onOpenContact, onOpenResume }) {
                     onOpenContact();
                   }
                 }}
-                className="font-display text-2xl font-bold text-zinc-200 hover:text-caribbean transition-colors tracking-wider flex items-center justify-between border-b border-white/5 pb-3"
+                className="text-xl sm:text-2xl font-bold text-zinc-200 hover:text-caribbean transition-colors tracking-wider flex items-center justify-between border-b border-white/5 pb-3"
               >
                 <span>{link.label}</span>
-                <span className="font-mono text-xs text-beige">0{idx + 1}</span>
+                <span className="text-xs text-beige">0{idx + 1}</span>
               </a>
             ))}
 
@@ -199,7 +191,7 @@ export default function Navbar({ onSelectWork, onOpenContact, onOpenResume }) {
                   playShutterSound();
                   onOpenResume();
                 }}
-                className="font-display text-2xl font-bold text-caribbean hover:text-white transition-colors tracking-wider flex items-center justify-between border-b border-white/5 pb-3 text-left"
+                className="text-xl sm:text-2xl font-bold text-caribbean hover:text-white transition-colors tracking-wider flex items-center justify-between border-b border-white/5 pb-3 text-left"
               >
                 <span>CURRICULUM VITAE (CV)</span>
                 <span className="font-mono text-xs text-caribbean">VIEW</span>

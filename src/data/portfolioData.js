@@ -38,7 +38,7 @@ export const PROJECTS = [
     duration: null,
     tools: ["CapCut", "Video Editing"],
     aspectRatio: "9:16 VERTICAL REEL",
-    thumbnail: "public/images/showreel_thumbnail.png",
+    thumbnail: "/images/showreel_thumbnail.png",
     videoUrl: "/videos/reel.mp4",
     shortDesc: "Cinematic edits combining dynamic transitions, text animation, synchronized audio, subtitles, and visual effects.",
     fullDesc: "Cinematic edits combining dynamic transitions, text animation, synchronized audio, subtitles, and visual effects crafted to maximize retention and engagement on short-form platforms.",
@@ -46,7 +46,7 @@ export const PROJECTS = [
     colorPalette: ["#000000", "#1b1b22", "#acee01", "#b4bbab"],
     aspect: "large",
     stills: [
-      "public/images/showreel_thumbnail.png"
+      "/images/showreel_thumbnail.png"
     ]
   },
   {
@@ -59,15 +59,15 @@ export const PROJECTS = [
     duration: null,
     tools: ["Visual Composition", "Audio Sync"],
     aspectRatio: "2.39:1 CINEMASCOPE",
-    thumbnail: "public/images/skill2 videography.png",
-    videoUrl: "public/videos/skill2.mp4",
+    thumbnail: "/images/skill2 videography.png",
+    videoUrl: "/videos/skill2.mp4",
     shortDesc: "Capturing authentic moments and transforming footage into engaging visual stories for digital platforms.",
     fullDesc: "Capturing authentic moments and transforming raw footage into compelling visual stories for digital platforms — with a focus on visual composition and audio synchronization.",
     client: null,
     colorPalette: ["#000000", "#0f172a", "#acee01", "#b4bbab"],
     aspect: "regular",
     stills: [
-      "public/images/skill2 videography.png"
+      "/images/skill2 videography.png"
     ]
   },
   {
@@ -80,7 +80,7 @@ export const PROJECTS = [
     duration: null,
     tools: ["Canva", "Adobe Photoshop"],
     aspectRatio: "PRINT & DIGITAL",
-    thumbnail: "public/images/grafic.png",
+    thumbnail: "/images/grafic.png",
     videoUrl: null,
     shortDesc: "Eye-catching designs combining bold typography, thoughtful layouts, color theory, and consistent brand visuals.",
     fullDesc: "Eye-catching designs combining bold typography, thoughtful layouts, color theory, and consistent brand visuals — crafted for posters, social media creatives, and promotional content.",
@@ -88,7 +88,7 @@ export const PROJECTS = [
     colorPalette: ["#000000", "#e4e4e7", "#acee01", "#71717a"],
     aspect: "regular",
     stills: [
-      "public/images/grafic.png"
+      "/images/grafic.png"
     ]
   }
 ];

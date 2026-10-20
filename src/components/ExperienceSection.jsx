@@ -130,9 +130,7 @@ export default function ExperienceSection() {
               </h2>
             </div>
             <div className="overflow-hidden">
-              <h2 className="sw-headline-anim font-display font-black text-[clamp(2.2rem,6vw,5.5rem)] text-white tracking-tighter uppercase flex items-center gap-4" style={{ lineHeight: 0.88 }}>
-                <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#acee01] inline-block flex-shrink-0" style={{ marginBottom: '0.15em' }} />
-              </h2>
+              
             </div>
           </div>
 
@@ -248,7 +246,7 @@ export default function ExperienceSection() {
             href="#contact"
             onClick={playShutterSound}
             onMouseEnter={playHoverSound}
-            className="inline-flex items-center gap-2.5 px-6 py-3 bg-[#acee01] text-black font-display font-black text-sm uppercase tracking-tight hover:bg-white transition-colors duration-200"
+            className="inline-flex items-center gap-2.5 px-6 py-3 bg-[#acee01] text-black font-bold text-sm uppercase tracking-tight hover:bg-white transition-colors duration-200"
           >
             <span>INITIATE COLLABORATION</span>
             <ArrowUpRight className="w-4 h-4" />

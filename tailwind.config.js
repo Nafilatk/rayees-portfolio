@@ -65,8 +65,7 @@ export default {
       fontFamily: {
         display: ['Syne', 'sans-serif'],
         sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
-        mono: ['Space Grotesk', 'monospace'],
-        serif: ['Cinzel', 'serif']
+        mono: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
       },
       letterSpacing: {
         cinematic: '0.25em',

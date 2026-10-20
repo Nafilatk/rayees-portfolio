@@ -17,11 +17,13 @@
     scroll-behavior: smooth;
     background-color: #000000;
     color: #ffffff;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   }
 
   body {
     background-color: #000000;
     color: #ffffff;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     selection-background-color: #acee01;
     selection-color: #000000;
   }

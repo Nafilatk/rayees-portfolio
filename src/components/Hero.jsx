@@ -236,7 +236,7 @@ export default function Hero({ onOpenShowreel }) {
                   <tspan fill="#acee01" fontWeight="bold">✳ </tspan>
                   <tspan fill="#ffffff" fillOpacity="0.95">VISUAL STORYTELLER </tspan>
                   <tspan fill="#acee01" fontWeight="bold">✳ </tspan>
-                  <tspan fill="#acee01" fontWeight="bold">FRAME BY FRAME </tspan>
+                  <tspan fill="#acee01" fontWeight="bold">SHOTSBYRYS </tspan>
                   <tspan fill="#acee01" fontWeight="bold">✳ </tspan>
                   <tspan fill="#ffffff" fillOpacity="0.85">VIDEO EDITOR </tspan>
                   <tspan fill="#acee01" fontWeight="bold">✳ </tspan>
@@ -244,7 +244,7 @@ export default function Hero({ onOpenShowreel }) {
                   <tspan fill="#acee01" fontWeight="bold">✳ </tspan>
                   <tspan fill="#ffffff" fillOpacity="0.95">VISUAL STORYTELLER </tspan>
                   <tspan fill="#acee01" fontWeight="bold">✳ </tspan>
-                  <tspan fill="#acee01" fontWeight="bold">FRAME BY FRAME </tspan>
+                  <tspan fill="#acee01" fontWeight="bold">SHOTSBYRYS </tspan>
                   <tspan fill="#acee01" fontWeight="bold">✳ </tspan>
                 </textPath>
               </text>
@@ -265,27 +265,7 @@ export default function Hero({ onOpenShowreel }) {
             />
           </div>
 
-          {/* Left Flank Name: MUHAMMED (in empty black space on the left) */}
-          <div
-            className="hero-flank-name hidden sm:flex absolute right-[calc(100%+1.5rem)] md:right-[calc(100%+2.5rem)] lg:right-[calc(100%+4rem)] bottom-[24%] md:bottom-[28%] items-center space-x-2.5 z-20 pointer-events-none select-none whitespace-nowrap"
-            aria-label="First Name: MUHAMMED"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-caribbean shadow-[0_0_8px_#acee01] flex-shrink-0 animate-pulse" />
-            <span className="font-mono text-xs md:text-sm lg:text-[15px] font-bold text-white tracking-[0.3em] uppercase">
-              MUHAMMED
-            </span>
-          </div>
 
-          {/* Right Flank Name: RAYEES (in empty black space on the right) */}
-          <div
-            className="hero-flank-name hidden sm:flex absolute left-[calc(100%+1.5rem)] md:left-[calc(100%+2.5rem)] lg:left-[calc(100%+4rem)] bottom-[24%] md:bottom-[28%] items-center space-x-2.5 z-20 pointer-events-none select-none whitespace-nowrap"
-            aria-label="Last Name: RAYEES"
-          >
-            <span className="font-mono text-xs md:text-sm lg:text-[15px] font-bold text-white tracking-[0.3em] uppercase">
-              RAYEES
-            </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-caribbean shadow-[0_0_8px_#acee01] flex-shrink-0 animate-pulse" />
-          </div>
         </div>
       </div>
     </section>

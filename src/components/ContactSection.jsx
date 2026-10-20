@@ -93,15 +93,17 @@ export default function ContactSection({ isOpen, onToggleContact, onOpenResume }
   };
 
   const services = [
-    "Bride to Be",
-    "Groom to Be",
+    "Bride & Groom to Be",
+    "Groom & Bride Entry",
     "Nikkah Ceremony",
     "Engagement",
     "Birthday Gala",
     "Automotive Cinema",
     "Travel & Drone",
     "Food & Culinary",
-    "Keynote Presentation"
+    "Keynote Presentation",
+    "Wedding full package",
+    "Other"
   ];
 
   return (
@@ -155,38 +157,6 @@ export default function ContactSection({ isOpen, onToggleContact, onOpenResume }
               />
             </button>
 
-            {/* View Resume Button */}
-            {onOpenResume && (
-              <button
-                type="button"
-                onClick={() => {
-                  playShutterSound();
-                  onOpenResume();
-                }}
-                onMouseEnter={playHoverSound}
-                title="View Resume / CV"
-                aria-label="View Resume"
-                className="inline-flex items-center space-x-1.5 px-3.5 py-2.5 bg-white/5 border border-white/20 hover:border-caribbean text-zinc-200 hover:text-white rounded-sm font-mono text-xs tracking-wider transition-all duration-300 group"
-                data-cursor="RESUME"
-              >
-                <Eye className="w-3.5 h-3.5 text-caribbean group-hover:scale-110 transition-transform" />
-                <span>VIEW RESUME</span>
-              </button>
-            )}
-
-            {/* Download CV Icon Button */}
-            <a
-              href="/Muhammed_Rayees_CV.pdf"
-              download="Muhammed_Rayees_CV.pdf"
-              onClick={playShutterSound}
-              onMouseEnter={playHoverSound}
-              title="Download CV (PDF)"
-              aria-label="Download CV"
-              className="inline-flex items-center justify-center w-10 h-10 bg-transparent border border-white/20 hover:border-caribbean text-white hover:text-caribbean hover:bg-white/5 rounded-sm transition-all duration-300 shadow-sm group"
-              data-cursor="DOWNLOAD"
-            >
-              <Download className="w-3.5 h-3.5 transform group-hover:scale-110 transition-transform" />
-            </a>
           </div>
         </div>
 
@@ -217,7 +187,7 @@ export default function ContactSection({ isOpen, onToggleContact, onOpenResume }
                     DIRECT INBOX
                   </span>
                   
-                  <div className="font-display font-bold text-base sm:text-lg text-white tracking-tight break-all">
+                  <div className="font-bold text-base sm:text-lg text-white tracking-tight break-all">
                     {PERSONAL_INFO.email}
                   </div>
 
